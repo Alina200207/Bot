@@ -22,7 +22,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         update.getUpdateId();
-        if(update.getMessage()!=null && update.getMessage().hasText() && update.getMessage().getText().equals("/help"))
+        if(update.getMessage()!=null && update.getMessage().getText().equals("/help"))
         {
             Long chat_Id = update.getMessage().getChatId();
             var help = new Help();
