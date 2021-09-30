@@ -25,51 +25,36 @@ public class Bot extends TelegramLongPollingBot {
         Long chat_Id = update.getMessage().getChatId();
         String inputText = update.getMessage().getText();
         SendMessage message = null;
+        message = new SendMessage();
+        message.setChatId(String.valueOf(chat_Id));
         switch (inputText){
             case "/start":
-                message = StartCommand.start( chat_Id);
+                message.setText(StartCommand.start());
                 break;
             case "/help":
                 var help = new Help();
                 message = new SendMessage(chat_Id.toString(), help.giveHelp());
                 break;
             case "/examples":
-                message = StartCommand.start( chat_Id);
+                message.setText(StartCommand.start());
                 break;
             case "/sequences":
-                message = StartCommand.start( chat_Id);
+                message.setText(StartCommand.start());
                 break;
             case "/issue":
-                message = StartCommand.start( chat_Id);
+                message.setText(StartCommand.start());
                 break;
             case "/level":
-                message = StartCommand.start( chat_Id);
+                message.setText(StartCommand.start());
                 break;
             default:
-                message = StartCommand.start( chat_Id);
+                message.setText(StartCommand.start());
         }
         try {
             execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-       /* if ((update.getMessage()!=null && update.getMessage().hasText())  && inputText.startsWith("/start"))
-            message = StartCommand.start( chat_Id);
-        try {
-            execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-        if(update.getMessage()!=null && update.getMessage().getText().equals("/help"))
-        {
-            var help = new Help();
-            try{
-                execute(new SendMessage(chat_Id.toString(), help.giveHelp()));
 
-            }
-            catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 }
