@@ -1,11 +1,7 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -22,17 +18,34 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         update.getUpdateId();
-        if(update.getMessage()!=null && update.getMessage().getText().equals("/help"))
+        if(update.getMessage()!=null && update.getMessage().hasText())
         {
+            String message = update.getMessage().getText();
             Long chat_Id = update.getMessage().getChatId();
-            var help = new Help();
-            try{
-                execute(new SendMessage(chat_Id.toString(), help.giveHelp()));
+            switch (message)
+            {
+                case "/help":
+                    try {
+                        execute(Help_Command.giveHelp(chat_Id.toString()));
+                    }
+                    catch (TelegramApiException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "/start":
+                    break;
+                case "/examples":
+                    break;
+                case "/Issue":
+                    break;
+                case "/Sequences":
+                    break;
+                case "/Level":
+                    break;
+                default:
+            }
 
-            }
-            catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
