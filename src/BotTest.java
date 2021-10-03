@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -18,10 +19,14 @@ class BotTest {
         assertNotNull(bot.getBotUsername());
         assertEquals(bot.getBotUsername(), "@Pump_up_your_brain_bot");
     }
-
+    Update update = new Update();
+    Message message = new Message();
     @Test
     void onUpdateReceived() {
-        //assertNotNull(bot.onUpdateReceived(bot.update));
+        message.setText("/help");
+        update.setMessage(message);
+        update.setUpdateId(1);
+        //assertNotNull(bot.onUpdateReceived(update));
     }
 
 }
