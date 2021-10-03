@@ -3,7 +3,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class Help_Command {
-    public static SendMessage giveHelp(String chat_Id) {
+    public static String giveHelp() {
         String helpMessage = new String("Я бот, который поможет прокачать мозг. " +
                 "В зависимости от твоего выбора я отправлю тебе либо загадки, либо последовательности, либо примеры. Обрати внимание: " +
                 "задание необходимо выполнить за ограниченное время(будет указано для каждого уровня сложности отдельно)" +
@@ -31,9 +31,9 @@ public class Help_Command {
                 System.lineSeparator() +
                 System.lineSeparator() +
                 "Желаем удачи :)");
-        SendMessage sendNewMessage = new SendMessage();
-        sendNewMessage.setChatId(chat_Id);
-        sendNewMessage.setText(helpMessage);
-        return sendNewMessage;
+        //SendMessage sendNewMessage = new SendMessage();
+       // sendNewMessage.setChatId(chat_Id);
+        //sendNewMessage.setText(helpMessage);
+        return helpMessage;
     }
 }

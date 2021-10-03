@@ -29,7 +29,7 @@ public class Bot extends TelegramLongPollingBot {
                     message.setText(StartCommand.start());
                     break;
                 case "/help":
-                    message=Help_Command.giveHelp(chat_Id.toString());
+                    message.setText(Help_Command.giveHelp());
                     break;
                 case "/examples":
                     message.setText(StartCommand.start());
