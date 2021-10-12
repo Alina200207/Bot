@@ -27,7 +27,6 @@
     </build>
 
     <dependencies>
-        <!-- Java-библиотека для работы с Bot API -->
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
