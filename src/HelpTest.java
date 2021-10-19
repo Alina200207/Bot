@@ -19,7 +19,6 @@ class HelpTest {
             "Желаем удачи :)");
     @Test
     void giveHelp() {
-        Help_Command help = new Help_Command();
-        assertEquals(help.giveHelp(), text);
+        assertEquals(HelpCommand.giveHelp(), text);
     }
 }
