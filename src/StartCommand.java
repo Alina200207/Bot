@@ -1,4 +1,3 @@
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 // interface ICommand {
 // public String handle();

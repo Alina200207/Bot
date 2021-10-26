@@ -23,8 +23,10 @@ public class Bot extends TelegramLongPollingBot {
         Example
     }
 
+
     private Map<String, Pair<State, String>> UsersCondition = new HashMap<>();
     private Map<String, HashMap<TypeTask, ArrayList<String>>> UsersUsedTasks = new HashMap<>();
+    private static HashMap<String, String> Level = new HashMap<>();
 
     @Override
     public String getBotToken() {
@@ -59,7 +61,10 @@ public class Bot extends TelegramLongPollingBot {
                     message.setText(HelpCommand.giveHelp());
                     break;
                 case "/examples":
-                    message.setText(StartCommand.start());
+                    var level = Level.get(chat_Id.toString());
+                    ExamplesCommand.GetLevel(level);
+                    message.setText(ExamplesCommand.getExample(UsersUsedTasks.get(chat_Id.toString()).get(TypeTask.Example)));
+                    UsersCondition.put(chat_Id.toString(), new Pair<>(State.Example, message.getText()));
                     break;
                 case "/sequences":
                     message.setText(IssueSequenceCommand.getCondition("sequence", UsersUsedTasks.get(chat_Id.toString()).get(TypeTask.Sequence)));
@@ -69,8 +74,10 @@ public class Bot extends TelegramLongPollingBot {
                     message.setText(IssueSequenceCommand.getCondition("issue", UsersUsedTasks.get(chat_Id.toString()).get(TypeTask.Issue)));
                     UsersCondition.put(chat_Id.toString(), new Pair<>(State.Issue, message.getText()));
                     break;
-                case "/level":
-                    message.setText(StartCommand.start());
+                 case "/level":
+                    message.setText(LevelCommand.getLevel(Level.get(chat_Id.toString())));
+                    Level.put(chat_Id.toString(), message.getText());
+                    UsersCondition.put(chat_Id.toString(), new Pair<>(State.Level, message.getText()));
                     break;
                 case "/statistic":
                     message.setText(Statistic.getStatistic(UsersUsedTasks.get(chat_Id.toString())));
@@ -100,6 +107,19 @@ public class Bot extends TelegramLongPollingBot {
                                     usedSequences.add(condition.getSecond());
                                     UsersUsedTasks.get(chat_Id.toString()).put(TypeTask.Sequence, usedSequences);
                                 }
+                                break;
+                            case Example:
+                                answer = ExamplesCommand.giveAnswer(condition.getSecond(), inputText);
+                                ArrayList<String> usedExamples = usedTasks.get(TypeTask.Example);
+                                message.setText(answer.getFirst());
+                                if (answer.getSecond()) {
+                                    usedExamples.add(condition.getSecond());
+                                    UsersUsedTasks.get(chat_Id.toString()).put(TypeTask.Example, usedExamples);
+                                }
+                                break;
+                            case Level:
+                                message.setText(LevelCommand.giveAnswer(inputText));
+                                Level.put(chat_Id.toString(), inputText);
                                 break;
                         }
                     }

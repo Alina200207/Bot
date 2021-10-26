@@ -20,7 +20,7 @@ public class Tasks {
         new Pair<String, String>("Как называется надпись на монете?", "Легенда"),
         new Pair<String, String>("Крылатый лев с орлиной головой.", "Грифон"),
         new Pair<String, String>("Наука о грибах.", "Микология"),
-        new Pair<String, String>("Как переводится слово \"ангел\"?", "Вестник"),
+        new Pair<String, String>("Как переводится слово \"ангел\" с древнегреческого?", "Вестник"),
         new Pair<String, String>("Какая птица из сорока букв?", "Сорока"),
         new Pair<String, String>("Что было \"завтра\", а будет \"вчера\"?", "Сегодня"),
         new Pair<String, String>("Какой химический элемент является лесом?", "Бор"),
@@ -52,5 +52,40 @@ public class Tasks {
             new Pair<>("", ""),
             new Pair<>("", ""),
             new Pair<>("", "")*/
+    ));
+    public static ArrayList<Pair<String, String>> ExamplesLevel1 = new ArrayList<Pair<String, String>>(Arrays.asList(
+            new Pair<>("12 + 3", "15"),
+            new Pair<>("34 + 8", "42"),
+            new Pair<>("87 + 6", "93"),
+            new Pair<>("77 + 6", "83"),
+            new Pair<>("8 / 8", "1"),
+            new Pair<>("121/11", "11"),
+            new Pair<>("6 * 7", "42"),
+            new Pair<>("70 / 10", "7"),
+            new Pair<>("8*10", "80")
+    ));
+    public static ArrayList<Pair<String, String>> ExamplesLevel2 = new ArrayList<Pair<String, String>>(Arrays.asList(
+            new Pair<>("3*12*4", "144"),
+            new Pair<>("34+17+90", "141"),
+            new Pair<>("23*2+18", "64"),
+            new Pair<>("478+23-45", "456"),
+            new Pair<>("567-896", "-329"),
+            new Pair<>("4958-78", "4880"),
+            new Pair<>("72 + 43", "115"),
+            new Pair<>("476 - 25", "451"),
+            new Pair<>("102000 / 600", "170"),
+            new Pair<>("9600 * 90", "864000"),
+            new Pair<>("34 - 90", "-56")
+    ));
+    public static ArrayList<Pair<String, String>> ExamplesLevel3 = new ArrayList<Pair<String, String>>(Arrays.asList(
+            new Pair<>("268 + 608 + 72", "948"),
+            new Pair<>("98 - 67 + 85", "116"),
+            new Pair<>("256 - 34 - 213", "9"),
+            new Pair<>("308 + 873 + 415", "1596"),
+            new Pair<>("2 + 4 - 13", "-7"),
+            new Pair<>("12 * 3 / 4 * 2", "18"),
+            new Pair<>("( 7 * 4 + 33 ) – 3 * 6 / 2", "5"),
+            new Pair<>("54 / 9 + ( 8 + 19 ) / 3 – 32 / 4", "7"),
+            new Pair<>("21 / 7 + (42 – 14 ) / 4 – ( 44 – 14 ) / 5", "22")
     ));
 }

@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BotTest {
