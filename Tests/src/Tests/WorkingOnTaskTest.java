@@ -32,7 +32,7 @@ class WorkingOnTaskTest {
 
     @Test
     void compareResult() {
-        assertEquals(false, examplesClass.compareResult(Condition, "3").getFirst());
-        assertTrue(examplesClass.compareResult(Condition, "83").getFirst());
+        assertEquals(false, examplesClass.compareResult(Condition, "3").correctness);
+        assertTrue(examplesClass.compareResult(Condition, "83").correctness);
     }
 }

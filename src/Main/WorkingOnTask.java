@@ -1,7 +1,5 @@
 package Main;
 
-import org.glassfish.grizzly.utils.Pair;
-
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -26,11 +24,11 @@ public class WorkingOnTask{
         var condition = notUsedTasks.get(random.nextInt(notUsedTasks.size()));
         return condition;
     }
-    public Pair<Boolean, String> compareResult(String condition, String playerAnswer)
+    public Answer compareResult(String condition, String playerAnswer)
     {
         String answer = Task.get(condition);
         if (answer.equals(playerAnswer))
-            return new Pair<>(true, answer);
-        return new Pair<>(false, answer);
+            return new Answer(answer, true);
+        return new Answer(answer, false);
     }
 }

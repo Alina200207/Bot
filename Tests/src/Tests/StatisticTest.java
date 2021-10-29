@@ -2,6 +2,7 @@ package Tests;
 
 import Main.Bot;
 import Main.Statistic;
+import Main.Type;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StatisticTest {
-        private static HashMap<Bot.TypeTask, ArrayList<String>> usedTasks = new HashMap<>();
+        private static HashMap<Type.TypeTask, ArrayList<String>> usedTasks = new HashMap<>();
+        private Statistic statistic = new Statistic();
 
         @BeforeAll
         private static void setUp() {
@@ -22,9 +24,9 @@ public class StatisticTest {
             sequences.add("45 54 45 54");
             ArrayList<String> examples = new ArrayList<>();
             examples.add("23+89");
-            usedTasks.put(Bot.TypeTask.Issue, issues);
-            usedTasks.put(Bot.TypeTask.Sequence, sequences);
-            usedTasks.put(Bot.TypeTask.Example, examples);
+            usedTasks.put(Type.TypeTask.Issue, issues);
+            usedTasks.put(Type.TypeTask.Sequence, sequences);
+            usedTasks.put(Type.TypeTask.Example, examples);
         }
 
         @Test
@@ -32,6 +34,6 @@ public class StatisticTest {
             assertEquals("Общее количество правильно решенных задач - 3." +
                     "\n" + "В частности, примеров - 1, " +
                     "последовательностей - 1, "  +
-                    "загадок - 1." + "\n\n" + "Молодец! Продолжай в том же духе :)", Statistic.getStatistic(usedTasks));
+                    "загадок - 1." + "\n\n" + "Молодец! Продолжай в том же духе :)", statistic.getStatistic(usedTasks));
         }
     }

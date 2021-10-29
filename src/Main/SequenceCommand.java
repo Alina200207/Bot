@@ -1,28 +1,23 @@
 package Main;
 
-import org.glassfish.grizzly.utils.Pair;
-
 import java.util.ArrayList;
 
-public class SequenceCommand implements TasksCommand{
+public class SequenceCommand extends TasksCommand{
 
-    private static WorkingOnTask sequence = new WorkingOnTask(Tasks.GetSequences());
+    private WorkingOnTask sequence = new WorkingOnTask(Tasks.GetSequences());
+
+    @Override
+    public void getTaskCommand(WorkingOnTask task) {
+        super.getTaskCommand(task);
+    }
 
     public String getTask(ArrayList usedTasks){
+        getTaskCommand(sequence);
         return sequence.getTask(usedTasks);
     }
 
-    public Pair<String, Boolean> getAnswer(String condition, String playerAnswer){
-        var result = sequence.compareResult(condition, playerAnswer);
-        var str = "Сыграем еще? Выбирай команду:\n" +
-                "/issue \n" +
-                "/examples \n" +
-                "/sequences";
-        var message = "";
-        if (result.getFirst())
-            message = "Верно! \n" + str;
-        else message = "Неверно :( \n" +
-                String.format("Правильный ответ: %s \n", result.getSecond()) + str;
-        return new Pair(message, result.getFirst());
+    @Override
+    public Answer getAnswer(String condition, String playerAnswer) {
+        return super.getAnswer(condition, playerAnswer);
     }
 }
