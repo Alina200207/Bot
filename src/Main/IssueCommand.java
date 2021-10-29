@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class IssueCommand implements TasksCommand{
 
-    private static IssueSequence issue = new IssueSequence(Tasks.Issues);
+    private static WorkingOnTask issue = new WorkingOnTask(Tasks.GetIssues());
 
     public String getTask(ArrayList usedTasks){
         return issue.getTask(usedTasks);

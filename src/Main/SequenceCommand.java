@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class SequenceCommand implements TasksCommand{
 
-    private static IssueSequence sequence = new IssueSequence(Tasks.Sequences);
+    private static WorkingOnTask sequence = new WorkingOnTask(Tasks.GetSequences());
 
     public String getTask(ArrayList usedTasks){
         return sequence.getTask(usedTasks);
