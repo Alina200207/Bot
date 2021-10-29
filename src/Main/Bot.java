@@ -36,7 +36,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1983849094:AAGFJrDTH5oOpPdhANCU97k9a_SNagBQwo4";
+        return "1983849094:AAFzDHlc8885CGOe-ISaVKoVYnbRq-mS6as";
     }
 
     @Override
@@ -59,41 +59,35 @@ public class Bot extends TelegramLongPollingBot {
         if(update.getMessage()!=null && update.getMessage().hasText()) {
             String inputText = update.getMessage().getText();
             switch (inputText) {
-                case "/start":
-                    message.setText(StartCommand.start());
-                    break;
-                case "/help":
-                    message.setText(HelpCommand.giveHelp());
-                    break;
-                case "/examples":
+                case "/start" -> message.setText(StartCommand.start());
+                case "/help" -> message.setText(HelpCommand.giveHelp());
+                case "/examples" -> {
                     var level = Level.get(chat_Id);
-                    ExamplesCommand.GetLevel(level);
+                    examplesCommand.GetLevel(level);
                     message.setText(examplesCommand.getTask(UsersUsedTasks.get(chat_Id).get(TypeTask.Example)));
                     UsersCondition.put(chat_Id, new Pair<>(State.Example, message.getText()));
-                    break;
-                case "/sequences":
+                }
+                case "/sequences" -> {
                     message.setText(sequenceCommand.getTask(UsersUsedTasks.get(chat_Id).get(TypeTask.Sequence)));
                     UsersCondition.put(chat_Id, new Pair<>(State.Sequence, message.getText()));
-                    break;
-                case "/issue":
+                }
+                case "/issue" -> {
                     message.setText(issueCommand.getTask(UsersUsedTasks.get(chat_Id).get(TypeTask.Issue)));
                     UsersCondition.put(chat_Id, new Pair<>(State.Issue, message.getText()));
-                    break;
-                 case "/level":
+                }
+                case "/level" -> {
                     message.setText(LevelCommand.getLevel(Level.get(chat_Id)));
                     UsersCondition.put(chat_Id, new Pair<>(State.Level, message.getText()));
-                    break;
-                case "/statistic":
-                    message.setText(Statistic.getStatistic(UsersUsedTasks.get(chat_Id)));
-                    break;
-                default:
-                    if (UsersCondition.get(chat_Id)!=null) {
+                }
+                case "/statistic" -> message.setText(Statistic.getStatistic(UsersUsedTasks.get(chat_Id)));
+                default -> {
+                    if (UsersCondition.get(chat_Id) != null) {
                         Pair<State, String> condition = UsersCondition.get(chat_Id);
                         HashMap<TypeTask, ArrayList<String>> usedTasks = UsersUsedTasks.get(chat_Id);
                         System.out.println(usedTasks);
                         var answer = new Pair<String, Boolean>();
                         switch (condition.getFirst()) {
-                            case Issue:
+                            case Issue -> {
                                 answer = issueCommand.getAnswer(condition.getSecond(), inputText);
                                 ArrayList<String> usedIssues = usedTasks.get(TypeTask.Issue);
                                 message.setText(answer.getFirst());
@@ -102,8 +96,8 @@ public class Bot extends TelegramLongPollingBot {
                                     UsersUsedTasks.get(chat_Id).put(TypeTask.Issue, usedIssues);
                                     System.out.println(UsersUsedTasks);
                                 }
-                                break;
-                            case Sequence:
+                            }
+                            case Sequence -> {
                                 answer = sequenceCommand.getAnswer(condition.getSecond(), inputText);
                                 message.setText(answer.getFirst());
                                 ArrayList<String> usedSequences = usedTasks.get(TypeTask.Sequence);
@@ -111,8 +105,8 @@ public class Bot extends TelegramLongPollingBot {
                                     usedSequences.add(condition.getSecond());
                                     UsersUsedTasks.get(chat_Id).put(TypeTask.Sequence, usedSequences);
                                 }
-                                break;
-                            case Example:
+                            }
+                            case Example -> {
                                 answer = examplesCommand.getAnswer(condition.getSecond(), inputText);
                                 ArrayList<String> usedExamples = usedTasks.get(TypeTask.Example);
                                 message.setText(answer.getFirst());
@@ -120,18 +114,17 @@ public class Bot extends TelegramLongPollingBot {
                                     usedExamples.add(condition.getSecond());
                                     UsersUsedTasks.get(chat_Id).put(TypeTask.Example, usedExamples);
                                 }
-                                break;
-                            case Level:
+                            }
+                            case Level -> {
                                 message.setText(LevelCommand.giveAnswer(inputText));
                                 Level.put(chat_Id, inputText);
-                                break;
+                            }
                         }
-                    }
-                    else message.setText("Не понимаю тебя( \nЧтобы просмотреть список команд введи /help.");
+                    } else message.setText("Не понимаю тебя( \nЧтобы просмотреть список команд введи /help.");
                     System.out.println(UsersCondition);
                     System.out.println(UsersUsedTasks);
                     UsersCondition.put(chat_Id, new Pair<>(State.NoState, ""));
-                    break;
+                }
             }
         }
 

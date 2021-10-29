@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class ExamplesCommand implements TasksCommand{
 
-    private static Example example;
+    private Example example;
 
-    public static void GetLevel(String level){
+    public void GetLevel(String level){
         if (Objects.equals(level, "3"))
             example = new Example(Tasks.ExamplesLevel3);
         else if (Objects.equals(level, "2"))
