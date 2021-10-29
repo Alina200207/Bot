@@ -3,7 +3,7 @@ package Main;
 public abstract class TasksCommand {
     public WorkingOnTask workingOnTask;
 
-    public void getTaskCommand(WorkingOnTask task) {
+    public void setTaskCommand(WorkingOnTask task) {
         workingOnTask = task;
     }
     public Answer getAnswer(String condition, String playerAnswer){

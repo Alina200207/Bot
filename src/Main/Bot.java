@@ -117,7 +117,7 @@ public class Bot extends TelegramLongPollingBot {
                                 }
                             }
                             case Level -> {
-                                message.setText(levelCommand.giveAnswer(inputText));
+                                message.setText(levelCommand.getAnswer(inputText));
                                 Level.put(chat_Id, inputText);
                             }
                         }

@@ -10,7 +10,7 @@ public class LevelCommand {
                 +"\n Введите 1, 2, 3, чтобы изменить соответствующий уровень";
     }
 
-    public String giveAnswer(String playerAnswer) {
+    public String getAnswer(String playerAnswer) {
         if (Integer.parseInt(playerAnswer)>3)
             return "Ты ввел неправильную цифру. Попробуй снова /level";
         var message = "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n" +
