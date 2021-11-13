@@ -1,7 +1,4 @@
 package Main;
-// interface ICommand {
-// public String handle();
-// }
 
 public class StartCommand {
 

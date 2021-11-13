@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -80,6 +81,22 @@ public class Bot extends TelegramLongPollingBot {
                     UsersCondition.put(chat_Id, new Condition(State.Level, message.getText()));
                 }
                 case "/statistic" -> message.setText(statistic.getStatisticWithText(statistic.getCountTasks(UsersUsedTasks.get(chat_Id))));
+
+                case "Подсказка" -> {
+                    var condition = UsersCondition.get(chat_Id);
+                    var clue = Clue.GetClues();
+                    message.setText(clue.get(condition.task));
+                }
+                case "/time" -> {
+                    var timer = new Timer();
+                    //timer.schedule();
+                    // вызовем статистику, в которой будет пред.рез и запишем его
+                    // запускаем таймер
+                    //когда таймер закончился, считаем новую статистику
+                    // вычитаем из новой старую
+                    //
+
+                }
                 default -> {
                     if (UsersCondition.get(chat_Id) != null) {
                         Condition condition = UsersCondition.get(chat_Id);
