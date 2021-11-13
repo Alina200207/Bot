@@ -4,10 +4,8 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
+
+import java.util.*;
 
 public class Bot extends TelegramLongPollingBot {
 
@@ -84,14 +82,34 @@ public class Bot extends TelegramLongPollingBot {
                     message.setText(clue.get(condition.task));
                 }
                 case "/time" -> {
-                    var timer = new Timer();
-                    //timer.schedule();
-                    // вызовем статистику, в которой будет пред.рез и запишем его
-                    // запускаем таймер
-                    //когда таймер закончился, считаем новую статистику
-                    // вычитаем из новой старую
-                    //
-
+                    var statisticBeforeTime = statistic.getCountTasks(userData.GetUsedTasks());
+                    Timer time = new Timer();
+                    time.schedule(new TimerTask() {
+                        int i = 0;
+                        @Override
+                        public void run() {
+                            if(i>=2){
+                                var statisticAfterTime = statistic.getCountTasks(userData.GetUsedTasks());
+                                message.setText("Время вышло. " + statistic.getStatisticWithText(
+                                        statistic.getCountTasks(statisticBeforeTime, statisticAfterTime)));
+                                try {
+                                    execute(message);
+                                } catch (TelegramApiException e) {
+                                    e.printStackTrace();
+                                }
+                                time.cancel();
+                                return;
+                            }
+                            message.setText("прошло " + (30+i*30) + " сек");
+                            try {
+                                execute(message);
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                            i = i + 1;
+                        }
+                    }, 30000, 30000); //(4000 - ПОДОЖДАТЬ ПЕРЕД НАЧАЛОМ В МИЛИСЕК, ПОВТОРЯТСЯ 4 СЕКУНДЫ (1 СЕК = 1000 МИЛИСЕК))
+                    message.setText("Время пошло. У вас есть 90 секунд");
                 }
                 default -> {
                     if (userData.GetCondition() != null) {
