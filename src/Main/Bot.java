@@ -4,13 +4,12 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.generics.TelegramBot;
+
 
 import java.util.*;
 
@@ -47,6 +46,7 @@ public class Bot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         message.setChatId(chat_Id);
         System.out.println(update);
+        message.setText("ji");
 
         if (UsersData.get(chat_Id) == null){
             UsersData.put(chat_Id, new UserData(chat_Id));
@@ -102,14 +102,26 @@ public class Bot extends TelegramLongPollingBot {
                     message.setText(clue.get(condition.task));
                 }
                 case "/time" -> {
-                    var timer = new Timer();
-                    //timer.schedule();
-                    // вызовем статистику, в которой будет пред.рез и запишем его
-                    // запускаем таймер
-                    //когда таймер закончился, считаем новую статистику
-                    // вычитаем из новой старую
-                    //
-
+                    var statisticBeforeTime = statistic.getCountTasks(userData.GetUsedTasks());
+                    Timer time = new Timer();
+                    time.schedule(new TimerTask() {
+                        int i = 0;
+                        @Override
+                        public void run() {
+                            if(i>=2){
+                                var statisticAfterTime = statistic.getCountTasks(userData.GetUsedTasks());
+                                message.setText("Время вышло. " + statistic.getStatisticWithText(
+                                        statistic.getCountTasks(statisticBeforeTime, statisticAfterTime)));
+                                sendMessage(message);
+                                time.cancel();
+                                return;
+                            }
+                            message.setText("прошло " + (30+i*30) + " сек");
+                            sendMessage(message);
+                            i = i + 1;
+                        }
+                    }, 30000, 30000);
+                    message.setText("Время пошло. У тебя есть 90 секунд. Выбирай команду!");
                 }
                 default -> {
                     if (userData.GetCondition() != null) {
@@ -161,13 +173,19 @@ public class Bot extends TelegramLongPollingBot {
         else if (update.hasCallbackQuery()){
             System.out.println("dfghjkl");
         }
+        sendMessage(message);
+    }
+
+    private void sendMessage(SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+            System.out.println(message.getText());
         }
     }
-    private InlineKeyboardMarkup getInlineButton(){
+
+    private ReplyKeyboard getInlineButton(){
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         List<InlineKeyboardButton> buttonsFirst = new ArrayList<>();
         InlineKeyboardButton clueButton = new InlineKeyboardButton();
@@ -190,5 +208,24 @@ public class Bot extends TelegramLongPollingBot {
         }
         System.out.println(message);
         return message;
+    }
+    public static InlineKeyboardMarkup sendInlineKeyBoardMessage(String chatId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();
+        InlineKeyboardButton inlineKeyboardButton2 = new InlineKeyboardButton();
+        inlineKeyboardButton1.setText("Тык");
+        inlineKeyboardButton1.setCallbackData("Button \"Тык\" has been pressed");
+        inlineKeyboardButton2.setText("Тык2");
+        inlineKeyboardButton2.setCallbackData("Button \"Тык2\" has been pressed");
+        List<InlineKeyboardButton> keyboardButtonsRow1 = new ArrayList<>();
+        List<InlineKeyboardButton> keyboardButtonsRow2 = new ArrayList<>();
+        keyboardButtonsRow1.add(inlineKeyboardButton1);
+        keyboardButtonsRow1.add(new InlineKeyboardButton());
+        keyboardButtonsRow2.add(inlineKeyboardButton2);
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow1);
+        rowList.add(keyboardButtonsRow2);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
     }
 }

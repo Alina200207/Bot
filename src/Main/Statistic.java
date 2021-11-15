@@ -27,7 +27,6 @@ public class Statistic {
             var statOfAnotherUser = user.GetLastStatistic();
             if (statOfAnotherUser.countAllTasks < countTasksThisUser){
                 countUsersWithFewerQuantity+=1;
-                System.out.println(9);
             }
             if (statOfAnotherUser.countAllTasks.equals(countTasksThisUser)){
                 countUsersWithSameQuantity+=1;
@@ -35,8 +34,6 @@ public class Statistic {
         }
         var percentFewer = usersData.size()>1 ? (countUsersWithFewerQuantity)/usersData.size()*100 : 100;
         var percentSame = usersData.size()>1 ? (countUsersWithSameQuantity - 1)/usersData.size()*100 : 0;
-        System.out.println(countUsersWithFewerQuantity);
-        System.out.println((countUsersWithFewerQuantity/usersData.size()*100));
         return String.format("Ты лучше %s%% пользователей; имеешь одинаковые баллы с %s%%. Всего пользователей - %s.", percentFewer, percentSame, usersData.size());
     }
 }
