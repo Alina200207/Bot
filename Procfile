@@ -1,1 +1,1 @@
-worker: java -cp target/classes/;target/dependency/* src.Main.Main
+worker: java -cp ./target/classes:./target/dependency/* Main
