@@ -12,16 +12,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WorkingOnTaskTest {
     private static String Condition;
-    private static String Answer;
-    private static HashMap<String, String> Examples = new HashMap<String, String>();
+    private static final HashMap<String, String> Examples = new HashMap<String, String>();
     private static WorkingOnTask examplesClass;
-    private static ArrayList<String> UsedTasks = new ArrayList<String>();
+    private static final ArrayList<String> UsedTasks = new ArrayList<String>();
 
     @BeforeAll
     private static void setUp() {
         Condition = "80+3";
-        Answer = "83";
-        Examples.put(Condition, Answer);
+        String answer = "83";
+        String anotherCondition = "5*10";
+        String anotherAnswer = "50";
+        Examples.put(Condition, answer);
+        Examples.put(anotherCondition, anotherAnswer);
+        UsedTasks.add(anotherCondition);
         examplesClass = new WorkingOnTask(Examples);
     }
 

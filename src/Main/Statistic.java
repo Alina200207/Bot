@@ -18,13 +18,16 @@ public class Statistic {
                 afterCount.countSequences - beforeCount.countSequences,
                 afterCount.countIssues - beforeCount.countIssues);
     }
-    public String getComparativeStatistic(Map<String, UserData> usersData, UserData thisUserData){
-        var countTasksThisUser = thisUserData.GetLastStatistic().countAllTasks;
+    public String getComparativeStatisticWithText(PercentStatistic percentStat) {
+        return String.format("Ты лучше %s%% пользователей; имеешь одинаковые баллы с %s%%. Всего пользователей - %s.", percentStat.percentFewer, percentStat.percentSame, percentStat.countUsers);
+    }
+    public PercentStatistic getComparativeStatistic(Map<String, UserData> usersData, UserData thisUserData){
+        var countTasksThisUser = thisUserData.getLastStatistic().countAllTasks;
         double countUsersWithFewerQuantity = 0.0;
         double countUsersWithSameQuantity = 0.0;
         ArrayList<UserData> userData = new ArrayList<UserData>(usersData.values());
         for (UserData user: userData){
-            var statOfAnotherUser = user.GetLastStatistic();
+            var statOfAnotherUser = user.getLastStatistic();
             if (statOfAnotherUser.countAllTasks < countTasksThisUser){
                 countUsersWithFewerQuantity+=1;
             }
@@ -32,9 +35,9 @@ public class Statistic {
                 countUsersWithSameQuantity+=1;
             }
         }
-        var percentFewer = usersData.size()>1 ? (countUsersWithFewerQuantity)/usersData.size()*100 : 100;
-        var percentSame = usersData.size()>1 ? (countUsersWithSameQuantity - 1)/usersData.size()*100 : 0;
-        return String.format("Ты лучше %s%% пользователей; имеешь одинаковые баллы с %s%%. Всего пользователей - %s.", percentFewer, percentSame, usersData.size());
+        var percentFewer = usersData.size()>1 ? (countUsersWithFewerQuantity)/usersData.size()*100 : 0;
+        var percentSame = usersData.size()>1 ? (countUsersWithSameQuantity - 1)/usersData.size()*100 : 100;
+        return new PercentStatistic(percentFewer, percentSame, usersData.size());
     }
 }
 

@@ -11,12 +11,18 @@ public class LevelCommand {
     }
 
     public String getAnswer(String playerAnswer) {
-        if (Integer.parseInt(playerAnswer)>3)
-            return "Ты ввел неправильную цифру. Попробуй снова /level";
-        var message = "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n" +
-                "/issue \n" +
-                "/examples \n" +
-                "/sequences";
+        var message = "Ты ввел неправильную цифру. Попробуй снова /level";
+        try{
+            var number = Integer.parseInt(playerAnswer);
+            if (number<4 && number>0)
+                return "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n" +
+                  "/issue \n" +
+                        "/examples \n" +
+                        "/sequences";
+        }
+        catch(NumberFormatException exc){
+            return message;
+        }
         return message;
     }
 }
