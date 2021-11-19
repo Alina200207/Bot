@@ -1,1 +1,1 @@
-worker: java -cp target/classes:target/dependency/* src/Main/Main.java
+worker: java -jar target/toolkas-echo-bot-1.0-SNAPSHOT.jar
