@@ -1,1 +1,1 @@
-worker: java -jar target/toolkas-echo-bot-1.0-SNAPSHOT.jar
+worker: target/toolkas-echo-bot-1.0-SNAPSHOT.jar
