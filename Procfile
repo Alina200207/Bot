@@ -1,1 +1,1 @@
-worker: java -cp target/classes:target/dependency/* telegram.bot.brainbot.Main
+worker: java -cp target/classes:target/dependency/* telegram.bot.brainbot.main

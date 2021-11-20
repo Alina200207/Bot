@@ -1,6 +1,6 @@
 package Tests;
 
-import Main.WorkingOnTask;
+import main.java.WorkingOnTask;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

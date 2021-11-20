@@ -1,6 +1,6 @@
 package Tests;
 
-import Main.PercentStatistic;
+import main.java.PercentStatistic;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

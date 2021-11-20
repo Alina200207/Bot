@@ -1,6 +1,6 @@
 package Tests;
 
-import Main.*;
+import main.java.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.*;
