@@ -1,6 +1,5 @@
 package main.java;
 
-import main.java.Bot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
