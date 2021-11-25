@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class WorkingOnTask{
+public class WorkingOnTask{ // todo test
 
     public HashMap<String, String> Task;
     public WorkingOnTask(HashMap<String, String> task) {

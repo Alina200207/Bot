@@ -2,7 +2,12 @@ package main.java;
 
 import java.util.*;
 
-public class Statistic {
+
+// StatisticCalculator
+/*
+    double getComparativeStatistic(UserData, UserData[])
+ */
+public class Statistic { // todo test
     public String getStatisticWithText(CountTasks countTasks) {
         String str = (countTasks.countAllTasks > 0) ? "Молодец! Продолжай в том же духе :)" : "Поднажми! Совсем ведь всё по нулям :(";
         return String.format("Общее количество правильно решенных задач - %s.\nВ частности, примеров - %s, последовательностей - %s, " +

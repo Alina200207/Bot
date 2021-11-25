@@ -1,7 +1,17 @@
 package main.java;
 
-public abstract class TasksCommand {
+import java.util.ArrayList;
+
+public class TasksCommand { // todo test
     public WorkingOnTask workingOnTask;
+
+    public TasksCommand(WorkingOnTask task) {
+        this.workingOnTask = task;
+    }
+
+    public String getTask(ArrayList usedTasks) {
+        return workingOnTask.getTask(usedTasks);
+    }
 
     public void setTaskCommand(WorkingOnTask task) {
         workingOnTask = task;

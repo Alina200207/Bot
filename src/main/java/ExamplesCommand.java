@@ -6,17 +6,16 @@ public class ExamplesCommand extends TasksCommand {
 
     private WorkingOnTask example;
 
-    public void AssignLevel(String level){
-        if ("3".equals(level))
-            example = new WorkingOnTask(Tasks.GetExamplesLevel3());
-        else if ("2".equals(level))
-            example = new WorkingOnTask(Tasks.GetExamplesLevel2());
-        else
-            example = new WorkingOnTask(Tasks.GetExamplesLevel1());
+    public ExamplesCommand() {
+        super(new WorkingOnTask(Tasks.GetExamplesLevel1()));
     }
 
-    public String getTask(ArrayList usedTasks){
-        setTaskCommand(example);
-        return example.getTask(usedTasks);
+    public void AssignLevel(String level){
+        if ("3".equals(level))  //сделать какие-то константы для уровня
+            setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel3()));
+        else if ("2".equals(level))
+            setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel2()));
+        else
+            setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel1()));
     }
 }

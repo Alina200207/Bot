@@ -13,7 +13,7 @@ class LevelCommandTest {
         int playerAnswer = (int)(Math.random() * 26 + 4); 
         String answerFalse = "Ты ввел неправильную цифру. Попробуй снова /level";
         assertEquals(answerFalse, levelCommand.getAnswer(Integer.toString(playerAnswer)));
-        playerAnswer = (int)(Math.random() * 4);
+        playerAnswer = (int)(Math.random() * 3 + 1);
         var answerTrue = "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n" + "/issue \n" + "/examples \n" +
                 "/sequences";
         assertEquals(answerTrue, levelCommand.getAnswer(Integer.toString(playerAnswer)));

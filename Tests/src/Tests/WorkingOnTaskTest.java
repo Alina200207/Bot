@@ -36,7 +36,7 @@ class WorkingOnTaskTest {
     }
 
     @Test
-    void GetIssueTest(){
+    void GetIssueTest(){ // Example_GetTask_ВернетНеиспользованнуюЗадачу_КогдаОнаОднаИспользованаИОднаНеИспользована
         assertEquals(Condition, examplesClass.getTask(UsedTasks));
     }
 
