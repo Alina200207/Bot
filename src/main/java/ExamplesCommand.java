@@ -3,6 +3,8 @@ package main.java;
 import java.util.ArrayList;
 
 public class ExamplesCommand extends TasksCommand {
+    private String level3 = "3";
+    private String level2 = "2";
 
     private WorkingOnTask example;
 
@@ -11,9 +13,9 @@ public class ExamplesCommand extends TasksCommand {
     }
 
     public void AssignLevel(String level){
-        if ("3".equals(level))  //сделать какие-то константы для уровня
+        if (level3.equals(level))
             setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel3()));
-        else if ("2".equals(level))
+        else if (level2.equals(level))
             setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel2()));
         else
             setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel1()));

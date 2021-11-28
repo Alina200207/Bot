@@ -2,22 +2,24 @@ package Tests;
 
 import main.java.Clue;
 import main.java.GetClue;
-import main.java.Tasks;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CluesTest {
-    static HashMap<String, String> userTask = Clue.GetClues();
-    static String str = "Упс! Это достаточно легко, для этого подсказки нет(";
-    static Object[] issue = userTask.keySet().toArray();
-    static GetClue clue = new GetClue();
+
     @Test
-    void getClue() {
-        assertEquals(str, clue.getClue(issue[0].toString()));
-        var pr  = clue.getClue(issue[1].toString());
-        assertEquals("Это вопрос на эрудицию, можешь найти ответ в интернете", clue.getClue(issue[1].toString()));
+    void getClue_ВыдаетПодсказкуИлиСообщениеЧтоЕеНет_КогдаЗагадкаИмеетПодсказкуИКогдаНет() {
+        var userTask = Clue.GetClues();
+        var issue = userTask.keySet().toArray();
+        var clue = new GetClue();
+
+        var result1 = clue.getClue(issue[0].toString());
+        var result2 = clue.getClue(issue[1].toString());
+        var result3 = clue.getClue(issue[6].toString());
+
+        assertEquals("Упс! Это достаточно легко, для этого подсказки нет(", result1);
+        assertEquals("Это вопрос на эрудицию, можешь найти ответ в интернете", result2);
+        assertEquals("Это изучают в школе", result3);
     }
 }

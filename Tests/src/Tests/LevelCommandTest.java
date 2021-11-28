@@ -6,16 +6,18 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LevelCommandTest {
-    private final LevelCommand levelCommand = new LevelCommand();
 
     @Test
-    void giveAnswer() {
-        int playerAnswer = (int)(Math.random() * 26 + 4); 
-        String answerFalse = "Ты ввел неправильную цифру. Попробуй снова /level";
-        assertEquals(answerFalse, levelCommand.getAnswer(Integer.toString(playerAnswer)));
-        playerAnswer = (int)(Math.random() * 3 + 1);
-        var answerTrue = "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n" + "/issue \n" + "/examples \n" +
-                "/sequences";
-        assertEquals(answerTrue, levelCommand.getAnswer(Integer.toString(playerAnswer)));
+    void giveAnswer_ВыдаетСообщениеОбОшибкеИлиМеняетУровень_КогдаНеправильноВвелиЦифруИКогдаВерноСоответственно() {
+        int playerAnswer1 = (int)(Math.random() * 26 + 4);
+        var playerAnswer2 = (int)(Math.random() * 3 + 1);
+        var levelCommand = new LevelCommand();
+
+        var falseResult = levelCommand.getAnswer(Integer.toString(playerAnswer1));
+        var trueResult = levelCommand.getAnswer(Integer.toString(playerAnswer2));
+
+        assertEquals("Ты ввел неправильную цифру. Попробуй снова /level", falseResult);
+        assertEquals("Ваш текущий уровень:" + playerAnswer2 + "\nВыбирай команду:\n" + "/issue \n" + "/examples \n" +
+                "/sequences", trueResult);
     }
 }

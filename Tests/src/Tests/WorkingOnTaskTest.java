@@ -12,38 +12,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WorkingOnTaskTest {
-    private static String Condition;
-    private static final HashMap<String, String> Examples = new HashMap<String, String>();
-    private static final HashMap<String, String> Issues = new HashMap<String, String>();
-    private static WorkingOnTask examplesClass;
-    private static WorkingOnTask issueClass;
-    private static final ArrayList<String> UsedTasks = new ArrayList<String>();
-    static HashMap<String, String> userTask = Tasks.GetIssues();
-    static String issue = userTask.keySet().toArray()[0].toString();
 
-    @BeforeAll
-    private static void setUp() {
-        Condition = "80+3";
-        String answer = "83";
-        String anotherCondition = "5*10";
-        String anotherAnswer = "50";
-        Examples.put(Condition, answer);
-        Examples.put(anotherCondition, anotherAnswer);
+
+    @Test
+    void Example_GetTask_ВернетНеиспользованнуюЗадачу_КогдаОнаОднаИспользованаИОднаНеИспользована(){
+        var Examples = new HashMap<String, String>();
+        Examples.put("80+3", "83");
+        var examplesClass = new WorkingOnTask(Examples);
+        var UsedTasks = new ArrayList<String>();
+        UsedTasks.add("5*10");
+
+        var result = examplesClass.getTask(UsedTasks);
+
+        assertEquals("80+3", result);
+    }
+
+    @Test
+    void compareResult_ПроверитПравильностьОтветаПользователя_КогдаОтветПравильныйИНеправильный() {
+        var userTask = Tasks.GetIssues();
+        var issue = userTask.keySet().toArray()[0].toString();
+        var Examples = new HashMap<String, String>();
+        var Issues = new HashMap<String, String>();
+        var examplesClass = new WorkingOnTask(Examples);
+        Examples.put("80+3", "83");
         Issues.put(userTask.get(issue), issue);
-        UsedTasks.add(anotherCondition);
-        examplesClass = new WorkingOnTask(Examples);
-        issueClass = new WorkingOnTask(Issues);
-    }
+        var issueClass = new WorkingOnTask(Issues);
 
-    @Test
-    void GetIssueTest(){ // Example_GetTask_ВернетНеиспользованнуюЗадачу_КогдаОнаОднаИспользованаИОднаНеИспользована
-        assertEquals(Condition, examplesClass.getTask(UsedTasks));
-    }
+        var falseResult = examplesClass.compareResult("80+3", "3").correctness;
+        var trueResult = issueClass.compareResult(userTask.get(issue), issue).correctness;
+        var result = examplesClass.compareResult("80+3", "83").correctness;
 
-    @Test
-    void compareResult() {
-        assertEquals(false, examplesClass.compareResult(Condition, "3").correctness);
-        assertEquals(true, issueClass.compareResult(userTask.get(issue), issue).correctness);
-        assertTrue(examplesClass.compareResult(Condition, "83").correctness);
+        assertEquals(false, falseResult);
+        assertEquals(true, trueResult);
+        assertTrue(result);
     }
 }
