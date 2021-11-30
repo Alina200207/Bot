@@ -37,9 +37,7 @@ public class UserData {
         return this.usedTasks;
     }
     public void ChangeUsedTasks(Type.TypeTask type, String conditionTask){
-        ArrayList<String> usedTasks = this.usedTasks.get(type);
-        usedTasks.add(conditionTask);
-        this.usedTasks.put(type, usedTasks);
+        this.usedTasks.get(type).add(conditionTask);
     }
     public Condition getCondition(){
         return this.condition;

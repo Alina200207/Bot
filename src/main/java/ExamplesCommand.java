@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ExamplesCommand extends TasksCommand {
     private String level3 = "3";
     private String level2 = "2";
+    private String level1 = "1";
 
     private WorkingOnTask example;
 
@@ -17,7 +18,7 @@ public class ExamplesCommand extends TasksCommand {
             setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel3()));
         else if (level2.equals(level))
             setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel2()));
-        else
+        else if (level1.equals(level))
             setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel1()));
     }
 }

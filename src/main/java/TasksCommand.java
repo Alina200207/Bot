@@ -14,19 +14,23 @@ public class TasksCommand { // todo test
     }
 
     public void setTaskCommand(WorkingOnTask task) {
-        workingOnTask = task;
+        this.workingOnTask = task;
     }
+
     public Answer getAnswer(String condition, String playerAnswer){
-        var result = workingOnTask.compareResult(condition, playerAnswer);
+        return workingOnTask.compareResult(condition, playerAnswer);
+    }
+
+    public Answer getAnswerWithText(Answer answer){
         var str = "Сыграем еще? Выбирай команду:\n" +
                 "/issue \n" +
                 "/examples \n" +
                 "/sequences";
         var message = "";
-        if (result.correctness)
+        if (answer.correctness)
             message = "Верно! \n" + str;
         else message = "Неверно :( \n" +
-                String.format("Правильный ответ: %s \n", result.answerString) + str;
-        return new Answer(message, result.correctness);
+                String.format("Правильный ответ: %s \n", answer.answerString) + str;
+        return new Answer(message, answer.correctness);
     }
 }
