@@ -1,6 +1,6 @@
 package Tests;
 
-import main.java.LevelCommand;
+import main.java.commands.LevelCommand;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

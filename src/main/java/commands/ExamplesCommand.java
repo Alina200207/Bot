@@ -1,6 +1,7 @@
-package main.java;
+package main.java.commands;
 
-import java.util.ArrayList;
+import main.java.Tasks;
+import main.java.WorkingOnTask;
 
 public class ExamplesCommand extends TasksCommand {
     private String level3 = "3";

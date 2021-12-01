@@ -1,4 +1,4 @@
-package main.java;
+package main.java.commands;
 
 public class LevelCommand {
 
@@ -15,10 +15,7 @@ public class LevelCommand {
         try{
             var number = Integer.parseInt(playerAnswer);
             if (number<4 && number>0)
-                return "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n" +
-                  "/issue \n" +
-                        "/examples \n" +
-                        "/sequences";
+                return "Ваш текущий уровень:" + playerAnswer + "\nВыбирай команду:\n";
         }
         catch(NumberFormatException exc){
             return message;

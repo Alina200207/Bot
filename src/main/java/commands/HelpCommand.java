@@ -1,4 +1,4 @@
-package main.java;
+package main.java.commands;
 
 public class HelpCommand {
     public static String giveHelp() {
