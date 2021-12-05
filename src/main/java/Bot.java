@@ -54,7 +54,6 @@ public class Bot extends TelegramLongPollingBot {
         }
         UserData userData = UsersData.get(chat_Id);
         if (update.hasCallbackQuery()){
-            System.out.println("fghhgfvbhjg");
             message.setText(processingCallbackQuery(update.getCallbackQuery()));
         }
         if(update.getMessage()!=null && update.getMessage().hasText()) {
@@ -129,11 +128,10 @@ public class Bot extends TelegramLongPollingBot {
                 default -> {
                     if (userData.getCondition() != null) {
                         Condition condition = userData.getCondition();
-                        condition = userData.getCondition();
                         var answer = new Answer("", false);
                         switch (condition.state) {
                             case Issue -> {
-                                answer = issueCommand.getAnswer(condition.task, inputText);
+                                answer = issueCommand.getAnswerWithText(issueCommand.getAnswer(condition.task, inputText));
                                 message.setText(answer.answerString);
                                 if (answer.correctness) {
                                     userData.ChangeUsedTasks(Type.TypeTask.Issue, condition.task);
@@ -142,7 +140,7 @@ public class Bot extends TelegramLongPollingBot {
                                 }
                             }
                             case Sequence -> {
-                                answer = sequenceCommand.getAnswer(condition.task, inputText);
+                                answer = sequenceCommand.getAnswerWithText(sequenceCommand.getAnswer(condition.task, inputText));
                                 message.setText(answer.answerString);
                                 if (answer.correctness) {
                                     userData.ChangeUsedTasks(Type.TypeTask.Sequence, condition.task);
@@ -152,7 +150,7 @@ public class Bot extends TelegramLongPollingBot {
                             }
                             case Example -> {
                                 examplesCommand.AssignLevel(userData.getLevel());
-                                answer = examplesCommand.getAnswer(condition.task, inputText);
+                                answer = examplesCommand.getAnswerWithText(examplesCommand.getAnswer(condition.task, inputText));
                                 message.setText(answer.answerString);
                                 if (answer.correctness) {
                                     userData.ChangeUsedTasks(Type.TypeTask.Example, condition.task);
