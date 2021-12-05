@@ -1,5 +1,7 @@
 package main.java;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Tasks {
@@ -53,47 +55,37 @@ public class Tasks {
         Sequences.put("27 81 243 729", "2187");//Следующий элемент получается умножением предыдущего на 3.
         return  Sequences;
     }
+
     public static HashMap<String, String> GetExamplesLevel1()
     {
-        ExamplesLevel1.put("12 + 3", "15");
-        ExamplesLevel1.put("34 + 8", "42");
-        ExamplesLevel1.put("87 + 6", "93");
-        ExamplesLevel1.put("77 + 6", "83");
-        ExamplesLevel1.put("8 / 8", "1");
-        ExamplesLevel1.put("121/11", "11");
-        ExamplesLevel1.put("6 * 7", "42");
-        ExamplesLevel1.put("70 / 10", "7");
-        ExamplesLevel1.put("8*10", "80");
+        GetExample(ExamplesLevel1, "https://x-math.herokuapp.com/api/add");
         return ExamplesLevel1;
     }
 
     public static HashMap<String, String> GetExamplesLevel2()
     {
-        ExamplesLevel2.put("3*12*4", "144");
-        ExamplesLevel2.put("34+17+90", "141");
-        ExamplesLevel2.put("23*2+18", "64");
-        ExamplesLevel2.put("478+23-45", "456");
-        ExamplesLevel2.put("567-896", "-329");
-        ExamplesLevel2.put("4958-78", "4880");
-        ExamplesLevel2.put("72 + 43", "115");
-        ExamplesLevel2.put("476 - 25", "451");
-        ExamplesLevel2.put("102000 / 600", "170");
-        ExamplesLevel2.put("9600 * 90", "864000");
-        ExamplesLevel2.put("34 - 90", "-56");
+        GetExample(ExamplesLevel2, "https://x-math.herokuapp.com/api/sub");
         return ExamplesLevel2;
     }
 
     public static HashMap<String, String> GetExamplesLevel3()
     {
-        ExamplesLevel3.put("268 + 608 + 72","948");
-        ExamplesLevel3.put("98 - 67 + 85","116");
-        ExamplesLevel3.put("256 - 34 - 213","9");
-        ExamplesLevel3.put("308 + 873 + 415","1596");
-        ExamplesLevel3.put("2 + 4 - 13","-7");
-        ExamplesLevel3.put("12 * 3 / 4 * 2","18");
-        ExamplesLevel3.put("( 7 * 4 + 33 ) – 3 * 6 / 2","5");
-        ExamplesLevel3.put("54 / 9 + ( 8 + 19 ) / 3 – 32 / 4","7");
-        ExamplesLevel3.put("21 / 7 + (42 – 14 ) / 4 – ( 44 – 14 ) / 5","22");
+        GetExample(ExamplesLevel3, "https://x-math.herokuapp.com/api/mul");
         return ExamplesLevel3;
+    }
+
+    private static void GetExample(HashMap<String, String> examplesLevel, String url) {
+        var a = new Api();
+        Runnable task = () -> {
+            try {
+                var expression = a.GetExampleWithApi(url);
+                examplesLevel.put(expression.get(0), expression.get(1));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
     }
 }
