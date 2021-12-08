@@ -3,7 +3,7 @@ package main.java.processingTasks;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Tasks {
+public class Tasks implements IMathTaskApi {
 
     public static HashMap<String, String>Issues = new HashMap<>();
     public static HashMap<String, String>Sequences = new HashMap<>();
@@ -57,34 +57,22 @@ public class Tasks {
 
     public static HashMap<String, String> GetExamplesLevel1()
     {
-        GetExample(ExamplesLevel1, "https://x-math.herokuapp.com/api/add");
+        ExamplesLevel1 = IMathTaskApi.GetAddTask(ExamplesLevel1);
+        System.out.println(ExamplesLevel1);
         return ExamplesLevel1;
     }
 
     public static HashMap<String, String> GetExamplesLevel2()
     {
-        GetExample(ExamplesLevel2, "https://x-math.herokuapp.com/api/sub");
+        ExamplesLevel2 = IMathTaskApi.GetSubTask(ExamplesLevel2);
         return ExamplesLevel2;
     }
 
     public static HashMap<String, String> GetExamplesLevel3()
     {
-        GetExample(ExamplesLevel3, "https://x-math.herokuapp.com/api/mul");
+        ExamplesLevel3 = IMathTaskApi.GetMulTask(ExamplesLevel3);
         return ExamplesLevel3;
     }
 
-    private static void GetExample(HashMap<String, String> examplesLevel, String url) {
-        var a = new Api();
-        Runnable task = () -> {
-            try {
-                var expression = a.GetExampleWithApi(url);
-                examplesLevel.put(expression.get(0), expression.get(1));
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
-        Thread thread = new Thread(task);
-        thread.start();
-    }
+
 }

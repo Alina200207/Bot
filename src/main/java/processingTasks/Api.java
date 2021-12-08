@@ -1,4 +1,4 @@
-package main.java;
+package main.java.processingTasks;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
