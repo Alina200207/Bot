@@ -16,7 +16,6 @@ import org.json.*;
 public class Api {
     public ArrayList<String> GetExampleWithApi(String u) throws IOException {
         var expression = new ArrayList<String>();
-<<<<<<< HEAD
         URL url = new URL(u);
         URLConnection request = url.openConnection();
         request.connect();
@@ -27,19 +26,7 @@ public class Api {
         String answer = rootObj.get("answer").getAsString();
         expression.add(message);
         expression.add(answer);
-=======
-        var connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod("GET");
-        var is = connection.getInputStream();
-        byte[] bytes = new byte[is.available()];
-        is.read(bytes);
-        var task = new String(bytes);
-        var t = task.split(",");
-        expression.add(t[3].split("\"")[3]);
-        expression.add(t[4].split(":")[1].replace("}", ""));
-        var kuku = "kuku";
-        System.out.println(kuku);
->>>>>>> b70adac1e842a657a3791375900dd0e00da4bd88
+
         return expression;
     }
 }
