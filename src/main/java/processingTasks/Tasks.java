@@ -58,7 +58,6 @@ public class Tasks implements IMathTaskApi {
     public static HashMap<String, String> GetExamplesLevel1()
     {
         ExamplesLevel1 = IMathTaskApi.GetAddTask(ExamplesLevel1);
-        System.out.println(ExamplesLevel1);
         return ExamplesLevel1;
     }
 

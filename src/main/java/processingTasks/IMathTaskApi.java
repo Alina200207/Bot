@@ -1,5 +1,7 @@
 package main.java.processingTasks;
 
+import main.java.Api;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -19,17 +21,13 @@ public interface IMathTaskApi {
 
     static HashMap<String, String> GetExample(HashMap<String, String> examplesLevel, String url) {
         var a = new Api();
-        Runnable task = () -> {
-            try {
-                var expression = a.GetExampleWithApi(url);
-                examplesLevel.put(expression.get(0), expression.get(1));
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
-        Thread thread = new Thread(task);
-        thread.start();
+        try {
+            var expression = a.GetExampleWithApi(url);
+            examplesLevel.put(expression.get(0), expression.get(1));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         return examplesLevel;
     }
 }
