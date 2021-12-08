@@ -1,11 +1,16 @@
 package main.java;
 
+import main.java.commands.*;
+import org.glassfish.grizzly.utils.Pair;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -42,143 +47,182 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
-        String chat_Id = update.getMessage().getChatId().toString();
         SendMessage message = new SendMessage();
-        message.setChatId(chat_Id);
-        System.out.println(update);
-        message.setText("Выбери команду.");
-
-        if (UsersData.get(chat_Id) == null){
-            UsersData.put(chat_Id, new UserData(chat_Id));
-        }
-        UserData userData = UsersData.get(chat_Id);
         if (update.hasCallbackQuery()){
-            message.setText(processingCallbackQuery(update.getCallbackQuery()));
-        }
-        if(update.getMessage()!=null && update.getMessage().hasText()) {
-            String inputText = update.getMessage().getText();
-            var usedTask = userData.getUsedTasks();
-            switch (inputText) {
-                case "/start" -> message.setText(StartCommand.start());
-                case "/help" -> message.setText(HelpCommand.giveHelp());
-                case "/examples" -> {
-                    var level = userData.getLevel();
-                    examplesCommand.AssignLevel(level);
-                    var usedExample = usedTask.get(Type.TypeTask.Example);
-                    var example = examplesCommand.getTask(usedExample);
-                    message.setText(example);
-                    userData.setCondition(State.Example, message.getText());
-                }
-                case "/sequences" -> {
-                    var usedSequence = usedTask.get(Type.TypeTask.Sequence);
-                    var sequence = sequenceCommand.getTask(usedSequence);
-                    message.setText(sequence);
-                    message.setReplyMarkup(getInlineButton());
-                    userData.setCondition(State.Sequence, message.getText());
-                }
-                case "/issue" -> {
-                    var usedIssue = usedTask.get(Type.TypeTask.Issue);
-                    var issue = issueCommand.getTask(usedIssue);
-                    message.setText(issue);
-                    message.setReplyMarkup(getInlineButton());
-                    userData.setCondition(State.Issue, message.getText());
-                }
-                case "/level" -> {
-                    message.setText(levelCommand.getLevel(userData.getLevel()));
-                    userData.setCondition(State.Level, message.getText());
-                }
-                case "/statistic" -> {
-                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                    var comparativeStatistic = statistic.getComparativeStatistic(UsersData, userData);
-                    userData.setLastStatistic(statistics);
-                    message.setText(statistic.getStatisticWithText(
-                            statistics) + "\n\n" + statistic.getComparativeStatisticWithText(comparativeStatistic)
-                            );
-                }
-                case "clueButton", "Подсказка" -> {
-                    var clue = clues.getClue(userData.getCondition().task);
-                    if (clue!=null) {
-                        message.setText(clue);
-                    }
-                    else message.setText("Подсказки даются только после выбора загадок или последовательностей. ");
-                }
-                case "/time" -> {
-                    var statisticBeforeTime = statistic.getCountTasks(userData.getUsedTasks());
-                    Timer time = new Timer();
-                    time.schedule(new TimerTask() {
-                        int i = 0;
-                        @Override
-                        public void run() {
-                            if(i>=2){
-                                var statisticAfterTime = statistic.getCountTasks(userData.getUsedTasks());
-                                message.setText("Время вышло. " + statistic.getStatisticWithText(
-                                        statistic.getCountTasks(statisticBeforeTime, statisticAfterTime)));
-                                sendMessage(message);
-                                time.cancel();
-                                return;
-                            }
-                            message.setText("прошло " + (30+i*30) + " сек");
-                            sendMessage(message);
-                            i = i + 1;
-                        }
-                    }, 30000, 30000);
-                    message.setText("Время пошло. У тебя есть 90 секунд. Выбирай команду!");
-                }
-                default -> {
-                    if (userData.getCondition() != null) {
-                        Condition condition = userData.getCondition();
-                        var answer = new Answer("", false);
-                        switch (condition.state) {
-                            case Issue -> {
-                                answer = issueCommand.getAnswerWithText(issueCommand.getAnswer(condition.task, inputText));
-                                message.setText(answer.answerString);
-                                if (answer.correctness) {
-                                    userData.ChangeUsedTasks(Type.TypeTask.Issue, condition.task);
-                                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                                    userData.setLastStatistic(statistics);
-                                }
-                            }
-                            case Sequence -> {
-                                answer = sequenceCommand.getAnswerWithText(sequenceCommand.getAnswer(condition.task, inputText));
-                                message.setText(answer.answerString);
-                                if (answer.correctness) {
-                                    userData.ChangeUsedTasks(Type.TypeTask.Sequence, condition.task);
-                                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                                    userData.setLastStatistic(statistics);
-                                }
-                            }
-                            case Example -> {
-                                examplesCommand.AssignLevel(userData.getLevel());
-                                answer = examplesCommand.getAnswerWithText(examplesCommand.getAnswer(condition.task, inputText));
-                                message.setText(answer.answerString);
-                                if (answer.correctness) {
-                                    userData.ChangeUsedTasks(Type.TypeTask.Example, condition.task);
-                                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                                    userData.setLastStatistic(statistics);
-                                }
-                            }
-                            case Level -> {
-                                message.setText(levelCommand.getAnswer(inputText));
-                                userData.setLevel(inputText);
-                            }
-                        }
-                    }
-                    else message.setText("Не понимаю тебя( \nЧтобы просмотреть список команд введи /help.");
-                    userData.setCondition(State.NoState, "");
-                    System.out.println(userData.getLastStatistic().countAllTasks);
-                    UsersData.put(chat_Id, userData);
-                }
+            var resultOfProcessing = processingCallbackQuery(update.getCallbackQuery());
+            message.setText(resultOfProcessing.getFirst());
+            message.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
+            if (resultOfProcessing.getSecond()){
+                message.setReplyMarkup(getInlineClueButton());
             }
         }
-        else if (update.hasCallbackQuery()){
-            System.out.println("dfghjkl");
+        else {
+            String chat_Id = update.getMessage().getChatId().toString();
+            message.setChatId(chat_Id);
+            if (UsersData.get(chat_Id) == null) {
+                UsersData.put(chat_Id, new UserData(chat_Id));
+            }
+            UserData userData = UsersData.get(chat_Id);
+            if (update.getMessage() != null && update.getMessage().hasText()) {
+                String inputText = update.getMessage().getText();
+                switch (inputText) {
+                    case "/start" -> {
+                        message.setText(StartCommand.start());
+                        message.setReplyMarkup(getReplyKeyboard());
+                    }
+                    case "/help", "Помощь" -> message.setText(HelpCommand.giveHelp());
+                    case "/time", "Игра на время" -> {
+                        var statisticBeforeTime = statistic.getCountTasks(userData.getUsedTasks());
+                        Timer time = new Timer();
+                        time.schedule(new TimerTask() {
+                            int i = 0;
+                            @Override
+                            public void run() {
+                                if (i >= 2) {
+                                    var statisticAfterTime = statistic.getCountTasks(userData.getUsedTasks());
+                                    message.setText("Время вышло. " + statistic.getStatisticWithText(
+                                            statistic.getCountTasks(statisticBeforeTime, statisticAfterTime)));
+                                    sendMessage(message);
+                                    time.cancel();
+                                    return;
+                                }
+                                message.setText("прошло " + (30 + i * 30) + " сек");
+                                sendMessage(message);
+                                i = i + 1;
+                            }
+                        }, 30000, 30000);
+                        message.setText("Время пошло. У тебя есть 90 секунд. Выбирай команду!");
+                    }
+                    case "/examples", "Пример", "/sequences", "Последовательность",
+                            "/issue", "Загадка", "/level", "Уровень сложности примеров",
+                            "/statistic", "Статистика" ->
+                            {
+                                var answer = getMessage(userData, inputText);
+                                message.setText(answer.answerString);
+                                if (answer.correctness){
+                                    message.setReplyMarkup(getInlineClueButton());
+                                }
+                            }
+                    default -> {
+                        if (userData.getCondition() != null) {
+                            message.setText(getAnswer(userData, inputText));
+                            message.setReplyMarkup(getInlinesCommandButtons());
+                        }
+                        if (message.getText().equals(""))
+                            message.setText("Не понимаю тебя( \nЧтобы просмотреть список команд введи /help.");
+                        userData.setCondition(State.NoState, "");
+                        UsersData.put(chat_Id, userData);
+                    }
+                }
+            }
         }
         sendMessage(message);
     }
 
+    private String getTask(UserData userData, Type.TypeTask type) {
+        switch (type){
+            case Example -> {
+                var level = userData.getLevel();
+                examplesCommand.AssignLevel(level);
+                var usedExample = userData.getUsedTasks().get(Type.TypeTask.Example);
+                return examplesCommand.getTask(usedExample);
+            }
+            case Sequence -> {
+                var usedSequence = userData.getUsedTasks().get(Type.TypeTask.Sequence);
+                return sequenceCommand.getTask(usedSequence);
+            }
+            case Issue -> {
+                var usedIssue = userData.getUsedTasks().get(Type.TypeTask.Issue);
+                return issueCommand.getTask(usedIssue);
+            }
+        }
+        return "";
+    }
 
-    private void sendMessage(SendMessage message) {
+    private String getAnswer(UserData userData, String inputText) {
+        Condition condition = userData.getCondition();
+        var answer = new Answer("", false);
+        var message = "";
+        switch (condition.state) {
+            case Issue -> {
+                answer = issueCommand.getAnswerWithText(issueCommand.getAnswer(condition.task, inputText));
+                if (answer.correctness) {
+                    userData.ChangeUsedTasks(Type.TypeTask.Issue, condition.task);
+                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                    userData.setLastStatistic(statistics);
+                }
+                message = answer.answerString;
+            }
+            case Sequence -> {
+                answer = sequenceCommand.getAnswerWithText(sequenceCommand.getAnswer(condition.task, inputText));
+                if (answer.correctness) {
+                    userData.ChangeUsedTasks(Type.TypeTask.Sequence, condition.task);
+                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                    userData.setLastStatistic(statistics);
+                }
+                message = answer.answerString;
+            }
+            case Example -> {
+                examplesCommand.AssignLevel(userData.getLevel());
+                answer = examplesCommand.getAnswerWithText(examplesCommand.getAnswer(condition.task, inputText));
+                if (answer.correctness) {
+                    userData.ChangeUsedTasks(Type.TypeTask.Example, condition.task);
+                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                    userData.setLastStatistic(statistics);
+                }
+                message = answer.answerString;
+            }
+            case Level -> {
+                userData.setLevel(inputText);
+                message = levelCommand.getAnswer(inputText);
+            }
+            default -> {
+                message = "";
+            }
+        }
+        UsersData.put(userData.getId(), userData);
+        return message;
+    }
+
+    private Answer getMessage(UserData userData, String inputText) {
+        var message = "";
+        var needKeyboard = false;
+        switch (inputText) {
+            case "/examples", "Пример" -> {
+                message = getTask(userData, Type.TypeTask.Example);
+                userData.setCondition(State.Example, message);
+            }
+            case "/sequences", "Последовательность" -> {
+                message = getTask(userData, Type.TypeTask.Sequence);
+                needKeyboard = true;
+                userData.setCondition(State.Sequence, message);
+            }
+            case "/issue", "Загадка" -> {
+                message = getTask(userData, Type.TypeTask.Issue);
+                needKeyboard = true;
+                userData.setCondition(State.Issue, message);
+            }
+            case "/level", "Уровень сложности примеров" -> {
+                message = levelCommand.getLevel(userData.getLevel());
+                userData.setCondition(State.Level, message);
+            }
+            case "/statistic", "Статистика" -> {
+                var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                var comparativeStatistic = statistic.getComparativeStatistic(UsersData, userData);
+                userData.setLastStatistic(statistics);
+                message = statistic.getStatisticWithText(
+                        statistics) + "\n\n" + statistic.getComparativeStatisticWithText(comparativeStatistic);
+            }
+            default -> {
+                message = "";
+            }
+        }
+        UsersData.put(userData.getId(), userData);
+        return new Answer(message, needKeyboard);
+    }
+
+
+        private void sendMessage(SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
@@ -187,7 +231,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    private ReplyKeyboard getInlineButton(){
+    private ReplyKeyboard getInlineClueButton(){
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         List<InlineKeyboardButton> buttonsFirst = new ArrayList<>();
         InlineKeyboardButton clueButton = new InlineKeyboardButton();
@@ -200,15 +244,81 @@ public class Bot extends TelegramLongPollingBot {
         return markup;
     }
 
-    private String processingCallbackQuery(CallbackQuery button){
-        String message = "Подсказки нет.";
+    private ReplyKeyboard getInlinesCommandButtons(){
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        List<InlineKeyboardButton> buttonsFirstRow = new ArrayList<>();
+        List<InlineKeyboardButton> buttonsSecondRow = new ArrayList<>();
+        List<InlineKeyboardButton> buttonsThirdRow = new ArrayList<>();
+        InlineKeyboardButton sequenceButton = new InlineKeyboardButton();
+        sequenceButton.setCallbackData("sequenceButton");
+        sequenceButton.setText("Последовательность");
+        buttonsFirstRow.add(sequenceButton);
+        InlineKeyboardButton examplesButton = new InlineKeyboardButton();
+        examplesButton.setCallbackData("examplesButton");
+        examplesButton.setText("Пример");
+        buttonsSecondRow.add(examplesButton);
+        InlineKeyboardButton issueButton = new InlineKeyboardButton();
+        issueButton.setCallbackData("issueButton");
+        issueButton.setText("Загадка");
+        buttonsThirdRow.add(issueButton);
+        buttons.add(buttonsFirstRow);
+        buttons.add(buttonsSecondRow);
+        buttons.add(buttonsThirdRow);
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        markup.setKeyboard(buttons);
+        return markup;
+    }
+    private ReplyKeyboard getReplyKeyboard(){
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow buttonsFirstRow = new KeyboardRow();
+        KeyboardRow buttonsSecondRow = new KeyboardRow();
+        KeyboardRow buttonsThirdRow = new KeyboardRow();
+        buttonsFirstRow.add(new KeyboardButton("Загадка"));
+        buttonsFirstRow.add(new KeyboardButton("Пример"));
+        buttonsFirstRow.add(new KeyboardButton("Последовательность"));
+        buttonsSecondRow.add(new KeyboardButton("Статистика"));
+        buttonsSecondRow.add(new KeyboardButton("Уровень сложности примеров"));
+        buttonsThirdRow.add(new KeyboardButton("Игра на время"));
+        buttonsThirdRow.add(new KeyboardButton("Помощь"));
+        keyboard.add(buttonsFirstRow);
+        keyboard.add(buttonsSecondRow);
+        keyboard.add(buttonsThirdRow);
+        ReplyKeyboardMarkup markup = new ReplyKeyboardMarkup();
+        markup.setResizeKeyboard(true);
+        markup.setOneTimeKeyboard(true);
+        markup.setKeyboard(keyboard);
+        return markup;
+    }
+
+    private Pair<String, Boolean> processingCallbackQuery(CallbackQuery button){
+        String message = "";
         String chat_id = button.getMessage().getChatId().toString();
-        if (button.getData().equals("clueButton")){
-            var condition = UsersData.get(chat_id).getCondition();
-            var clue = Clue.GetClues();
-            message = clue.get(condition.task);
+        System.out.println(chat_id);
+        String data = button.getData();
+        var needClueButton = false;
+        var userData = UsersData.get(chat_id);
+        switch (data) {
+            case "clueButton" -> {
+                var condition = UsersData.get(chat_id).getCondition();
+                var clue = Clue.GetClues();
+                message = clue.get(condition.task);
+            }
+            case "sequenceButton" -> {
+                message = getTask(userData, Type.TypeTask.Sequence);
+                userData.setCondition(State.Sequence, message);
+                needClueButton = true;
+            }
+            case "examplesButton" -> {
+                message = getTask(userData, Type.TypeTask.Example);
+                userData.setCondition(State.Example, message);
+            }
+            case "issueButton" -> {
+                message = getTask(userData, Type.TypeTask.Issue);
+                userData.setCondition(State.Issue, message);
+                needClueButton = true;
+            }
         }
-        System.out.println(message);
-        return message;
+        UsersData.put(chat_id, userData);
+        return new Pair<>(message, needClueButton);
     }
 }

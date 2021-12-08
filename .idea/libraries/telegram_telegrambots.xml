@@ -2,8 +2,8 @@
   <library name="telegram.telegrambots" type="repository">
     <properties maven-id="org.telegram:telegrambots:LATEST" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/telegrambots-5.4.0.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/telegrambots-meta-5.4.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/telegrambots-5.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/telegrambots-meta-5.5.0.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/guava-30.0-jre.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/failureaccess-1.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar!/" />
@@ -51,8 +51,8 @@
       <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.30.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/lib/telegrambots-5.4.0.1-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/telegrambots-meta-5.4.0.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/telegrambots-5.5.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/telegrambots-meta-5.5.0-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/guava-30.0-jre-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/failureaccess-1.0.1-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jsr305-3.0.2-javadoc.jar!/" />
@@ -99,8 +99,8 @@
       <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.30-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/telegrambots-5.4.0.1-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/telegrambots-meta-5.4.0.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/telegrambots-5.5.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/telegrambots-meta-5.5.0-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/guava-30.0-jre-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/failureaccess-1.0.1-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jsr305-3.0.2-sources.jar!/" />

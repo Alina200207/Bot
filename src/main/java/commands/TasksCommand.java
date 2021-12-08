@@ -1,8 +1,11 @@
-package main.java;
+package main.java.commands;
+
+import main.java.Answer;
+import main.java.WorkingOnTask;
 
 import java.util.ArrayList;
 
-public class TasksCommand { // todo test
+public class TasksCommand {
     public WorkingOnTask workingOnTask;
 
     public TasksCommand(WorkingOnTask task) {
@@ -22,10 +25,7 @@ public class TasksCommand { // todo test
     }
 
     public Answer getAnswerWithText(Answer answer){
-        var str = "Сыграем еще? Выбирай команду:\n" +
-                "/issue \n" +
-                "/examples \n" +
-                "/sequences";
+        var str = "Сыграем еще?";
         var message = "";
         if (answer.correctness)
             message = "Верно! \n" + str;

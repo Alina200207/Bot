@@ -1,7 +1,7 @@
 package Tests;
 
 import main.java.Tasks;
-import main.java.TasksCommand;
+import main.java.commands.TasksCommand;
 import main.java.WorkingOnTask;
 import org.junit.jupiter.api.Test;
 

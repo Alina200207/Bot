@@ -53,7 +53,7 @@ public class Tasks {
         Sequences.put("П В С Ч П С", "В");//Первые буквы дней недели
         Sequences.put("12 43 56", "87");
         Sequences.put("27 81 243 729", "2187");//Следующий элемент получается умножением предыдущего на 3.
-        return  Sequences;
+        return Sequences;
     }
 
     public static HashMap<String, String> GetExamplesLevel1()
