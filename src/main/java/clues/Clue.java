@@ -1,4 +1,4 @@
-package main.java;
+package main.java.clues;
 
 import java.util.HashMap;
 

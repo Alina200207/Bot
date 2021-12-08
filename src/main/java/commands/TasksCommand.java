@@ -1,7 +1,7 @@
 package main.java.commands;
 
-import main.java.Answer;
-import main.java.WorkingOnTask;
+import main.java.structures.Answer;
+import main.java.processingTasks.WorkingOnTask;
 
 import java.util.ArrayList;
 

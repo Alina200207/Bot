@@ -1,4 +1,9 @@
-package main.java;
+package main.java.statistic;
+
+import main.java.structures.CountTasks;
+import main.java.structures.PercentStatistic;
+import main.java.structures.Type;
+import main.java.userData.UserData;
 
 import java.util.*;
 

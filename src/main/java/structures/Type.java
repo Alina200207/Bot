@@ -1,4 +1,4 @@
-package main.java;
+package main.java.structures;
 
 public class Type {
     public enum TypeTask{

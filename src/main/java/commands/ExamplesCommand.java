@@ -1,7 +1,7 @@
 package main.java.commands;
 
-import main.java.Tasks;
-import main.java.WorkingOnTask;
+import main.java.processingTasks.Tasks;
+import main.java.processingTasks.WorkingOnTask;
 
 public class ExamplesCommand extends TasksCommand {
     private String level3 = "3";

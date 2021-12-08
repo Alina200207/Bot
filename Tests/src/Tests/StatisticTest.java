@@ -1,6 +1,9 @@
 package Tests;
 
-import main.java.*;
+import main.java.statistic.Statistic;
+import main.java.userData.UserData;
+import main.java.structures.CountTasks;
+import main.java.structures.Type;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.ArrayList;
