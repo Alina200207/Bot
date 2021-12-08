@@ -3,13 +3,18 @@ package main.java.processingTasks;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Tasks implements IMathTaskApi {
+public class Tasks{
 
-    public static HashMap<String, String>Issues = new HashMap<>();
-    public static HashMap<String, String>Sequences = new HashMap<>();
-    public static HashMap<String, String>ExamplesLevel1 = new HashMap<>();
+    public static HashMap<String, String> Issues = new HashMap<>();
+    public static HashMap<String, String> Sequences = new HashMap<>();
+    public static HashMap<String, String> ExamplesLevel1 = new HashMap<>();
     public static HashMap<String, String> ExamplesLevel2 = new HashMap<>();
     public static HashMap<String, String> ExamplesLevel3 = new HashMap<>();
+    public IMathTaskApi MathTasks;
+
+    public Tasks(IMathTaskApi mathTasks){
+        MathTasks = mathTasks;
+    }
 
     public static HashMap<String, String> GetIssues() {
         Issues.put("Многие средневековые русские актёры (скоморохи) "+
@@ -55,21 +60,21 @@ public class Tasks implements IMathTaskApi {
         return Sequences;
     }
 
-    public static HashMap<String, String> GetExamplesLevel1()
+    public HashMap<String, String> GetExamplesLevel1()
     {
-        ExamplesLevel1 = IMathTaskApi.GetAddTask(ExamplesLevel1);
+        ExamplesLevel1 = this.MathTasks.GetAddTask(ExamplesLevel1);
         return ExamplesLevel1;
     }
 
-    public static HashMap<String, String> GetExamplesLevel2()
+    public HashMap<String, String> GetExamplesLevel2()
     {
-        ExamplesLevel2 = IMathTaskApi.GetSubTask(ExamplesLevel2);
+        ExamplesLevel2 = this.MathTasks.GetSubTask(ExamplesLevel2);
         return ExamplesLevel2;
     }
 
-    public static HashMap<String, String> GetExamplesLevel3()
+    public HashMap<String, String> GetExamplesLevel3()
     {
-        ExamplesLevel3 = IMathTaskApi.GetMulTask(ExamplesLevel3);
+        ExamplesLevel3 = this.MathTasks.GetMulTask(ExamplesLevel3);
         return ExamplesLevel3;
     }
 

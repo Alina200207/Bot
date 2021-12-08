@@ -1,5 +1,6 @@
 package Tests;
 
+import main.java.processingTasks.MathTasks;
 import main.java.processingTasks.Tasks;
 import main.java.commands.TasksCommand;
 import main.java.processingTasks.WorkingOnTask;
@@ -13,10 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class TasksCommandTest {
     @Test
     void getAnswer_Возвращаетnullиfalse_КогдаПроисходитСменаВидаЗадач(){
-        TasksCommand taskCommand = new TasksCommand(new WorkingOnTask(Tasks.GetExamplesLevel1()));
+        Tasks tasks = new Tasks(new MathTasks());
+        TasksCommand taskCommand = new TasksCommand(new WorkingOnTask(tasks.GetExamplesLevel1()));
         var task = taskCommand.getTask(new ArrayList());
-        var correctAnswer = Tasks.GetExamplesLevel1().get(task);
-        taskCommand.setTaskCommand(new WorkingOnTask(Tasks.GetExamplesLevel2()));
+        var correctAnswer = tasks.GetExamplesLevel1().get(task);
+        taskCommand.setTaskCommand(new WorkingOnTask(tasks.GetExamplesLevel2()));
         var result = taskCommand.getAnswer(task, correctAnswer);
 
         assertNull(result.answerString);
