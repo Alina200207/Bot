@@ -71,32 +71,6 @@ public class Bot extends TelegramLongPollingBot {
                         message.setReplyMarkup(getReplyKeyboard());
                     }
                     case "/help", "Помощь" -> message.setText(HelpCommand.giveHelp());
-                    case "/examples", "Пример" -> {
-                        message.setText(getTask(userData, Type.TypeTask.Example));
-                        userData.setCondition(State.Example, message.getText());
-                    }
-                    case "/sequences", "Последовательность" -> {
-                        message.setText(getTask(userData, Type.TypeTask.Sequence));
-                        message.setReplyMarkup(getInlineClueButton());
-                        userData.setCondition(State.Sequence, message.getText());
-                    }
-                    case "/issue", "Загадка" -> {
-                        message.setText(getTask(userData, Type.TypeTask.Issue));
-                        message.setReplyMarkup(getInlineClueButton());
-                        userData.setCondition(State.Issue, message.getText());
-                    }
-                    case "/level", "Уровень сложности примеров"-> {
-                        message.setText(levelCommand.getLevel(userData.getLevel()));
-                        userData.setCondition(State.Level, message.getText());
-                    }
-                    case "/statistic", "Статистика"-> {
-                        var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                        var comparativeStatistic = statistic.getComparativeStatistic(UsersData, userData);
-                        userData.setLastStatistic(statistics);
-                        message.setText(statistic.getStatisticWithText(
-                                statistics) + "\n\n" + statistic.getComparativeStatisticWithText(comparativeStatistic)
-                        );
-                    }
                     case "/time", "Игра на время" -> {
                         var statisticBeforeTime = statistic.getCountTasks(userData.getUsedTasks());
                         Timer time = new Timer();
@@ -119,53 +93,27 @@ public class Bot extends TelegramLongPollingBot {
                         }, 30000, 30000);
                         message.setText("Время пошло. У тебя есть 90 секунд. Выбирай команду!");
                     }
-                    default -> {
-                        if (userData.getCondition() != null) {
-                            Condition condition = userData.getCondition();
-                            var answer = new Answer("", false);
-                            switch (condition.state) {
-                                case Issue -> {
-                                    answer = issueCommand.getAnswerWithText(issueCommand.getAnswer(condition.task, inputText));
-                                    message.setText(answer.answerString);
-                                    if (answer.correctness) {
-                                        userData.ChangeUsedTasks(Type.TypeTask.Issue, condition.task);
-                                        var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                                        userData.setLastStatistic(statistics);
-                                    }
-                                }
-                                case Sequence -> {
-                                    answer = sequenceCommand.getAnswerWithText(sequenceCommand.getAnswer(condition.task, inputText));
-                                    message.setText(answer.answerString);
-                                    if (answer.correctness) {
-                                        userData.ChangeUsedTasks(Type.TypeTask.Sequence, condition.task);
-                                        var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                                        userData.setLastStatistic(statistics);
-                                    }
-                                }
-                                case Example -> {
-                                    examplesCommand.AssignLevel(userData.getLevel());
-                                    answer = examplesCommand.getAnswerWithText(examplesCommand.getAnswer(condition.task, inputText));
-                                    message.setText(answer.answerString);
-                                    if (answer.correctness) {
-                                        userData.ChangeUsedTasks(Type.TypeTask.Example, condition.task);
-                                        var statistics = statistic.getCountTasks(userData.getUsedTasks());
-                                        userData.setLastStatistic(statistics);
-                                    }
-                                }
-                                case Level -> {
-                                    message.setText(levelCommand.getAnswer(inputText));
-                                    userData.setLevel(inputText);
+                    case "/examples", "Пример", "/sequences", "Последовательность",
+                            "/issue", "Загадка", "/level", "Уровень сложности примеров",
+                            "/statistic", "Статистика" ->
+                            {
+                                var answer = getMessage(userData, inputText);
+                                message.setText(answer.answerString);
+                                if (answer.correctness){
+                                    message.setReplyMarkup(getInlineClueButton());
                                 }
                             }
+                    default -> {
+                        if (userData.getCondition() != null) {
+                            message.setText(getAnswer(userData, inputText));
                             message.setReplyMarkup(getInlinesCommandButtons());
                         }
                         if (message.getText().equals(""))
                             message.setText("Не понимаю тебя( \nЧтобы просмотреть список команд введи /help.");
                         userData.setCondition(State.NoState, "");
-                        System.out.println(userData.getLastStatistic().countAllTasks);
+                        UsersData.put(chat_Id, userData);
                     }
                 }
-                UsersData.put(chat_Id, userData);
             }
         }
         sendMessage(message);
@@ -191,8 +139,90 @@ public class Bot extends TelegramLongPollingBot {
         return "";
     }
 
+    private String getAnswer(UserData userData, String inputText) {
+        Condition condition = userData.getCondition();
+        var answer = new Answer("", false);
+        var message = "";
+        switch (condition.state) {
+            case Issue -> {
+                answer = issueCommand.getAnswerWithText(issueCommand.getAnswer(condition.task, inputText));
+                if (answer.correctness) {
+                    userData.ChangeUsedTasks(Type.TypeTask.Issue, condition.task);
+                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                    userData.setLastStatistic(statistics);
+                }
+                message = answer.answerString;
+            }
+            case Sequence -> {
+                answer = sequenceCommand.getAnswerWithText(sequenceCommand.getAnswer(condition.task, inputText));
+                if (answer.correctness) {
+                    userData.ChangeUsedTasks(Type.TypeTask.Sequence, condition.task);
+                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                    userData.setLastStatistic(statistics);
+                }
+                message = answer.answerString;
+            }
+            case Example -> {
+                examplesCommand.AssignLevel(userData.getLevel());
+                answer = examplesCommand.getAnswerWithText(examplesCommand.getAnswer(condition.task, inputText));
+                if (answer.correctness) {
+                    userData.ChangeUsedTasks(Type.TypeTask.Example, condition.task);
+                    var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                    userData.setLastStatistic(statistics);
+                }
+                message = answer.answerString;
+            }
+            case Level -> {
+                userData.setLevel(inputText);
+                message = levelCommand.getAnswer(inputText);
+            }
+            default -> {
+                message = "";
+            }
+        }
+        UsersData.put(userData.getId(), userData);
+        return message;
+    }
 
-    private void sendMessage(SendMessage message) {
+    private Answer getMessage(UserData userData, String inputText) {
+        var message = "";
+        var needKeyboard = false;
+        switch (inputText) {
+            case "/examples", "Пример" -> {
+                message = getTask(userData, Type.TypeTask.Example);
+                userData.setCondition(State.Example, message);
+            }
+            case "/sequences", "Последовательность" -> {
+                message = getTask(userData, Type.TypeTask.Sequence);
+                needKeyboard = true;
+                userData.setCondition(State.Sequence, message);
+            }
+            case "/issue", "Загадка" -> {
+                message = getTask(userData, Type.TypeTask.Issue);
+                needKeyboard = true;
+                userData.setCondition(State.Issue, message);
+            }
+            case "/level", "Уровень сложности примеров" -> {
+                message = levelCommand.getLevel(userData.getLevel());
+                userData.setCondition(State.Level, message);
+            }
+            case "/statistic", "Статистика" -> {
+                var statistics = statistic.getCountTasks(userData.getUsedTasks());
+                var comparativeStatistic = statistic.getComparativeStatistic(UsersData, userData);
+                userData.setLastStatistic(statistics);
+                message = statistic.getStatisticWithText(
+                        statistics) + "\n\n" + statistic.getComparativeStatisticWithText(comparativeStatistic);
+            }
+            default -> {
+                message = "";
+            }
+        }
+        UsersData.put(userData.getId(), userData);
+        return new Answer(message, needKeyboard);
+    }
+
+
+        private void sendMessage(SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
