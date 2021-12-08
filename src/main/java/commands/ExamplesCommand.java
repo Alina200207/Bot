@@ -7,6 +7,7 @@ public class ExamplesCommand extends TasksCommand {
     private String level3 = "3";
     private String level2 = "2";
     private String level1 = "1";
+    private String level4 = "4";
 
     private WorkingOnTask example;
 
