@@ -1,8 +1,8 @@
 package Tests;
 
-import main.java.Tasks;
+import main.java.processingTasks.Tasks;
 import main.java.commands.TasksCommand;
-import main.java.WorkingOnTask;
+import main.java.processingTasks.WorkingOnTask;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

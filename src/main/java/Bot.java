@@ -1,6 +1,13 @@
 package main.java;
 
 import main.java.commands.*;
+import main.java.clues.Clue;
+import main.java.clues.GetClue;
+import main.java.statistic.Statistic;
+import main.java.userData.UserData;
+import main.java.structures.Answer;
+import main.java.structures.Condition;
+import main.java.structures.Type;
 import org.glassfish.grizzly.utils.Pair;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;

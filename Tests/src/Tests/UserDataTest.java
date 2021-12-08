@@ -1,9 +1,9 @@
 package Tests;
 
 import main.java.Bot;
-import main.java.CountTasks;
-import main.java.Type;
-import main.java.UserData;
+import main.java.structures.CountTasks;
+import main.java.structures.Type;
+import main.java.userData.UserData;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;

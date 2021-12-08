@@ -26,7 +26,6 @@ public class Api {
         String answer = rootObj.get("answer").getAsString();
         expression.add(message);
         expression.add(answer);
-
         return expression;
     }
 }

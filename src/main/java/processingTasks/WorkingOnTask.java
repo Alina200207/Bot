@@ -1,4 +1,6 @@
-package main.java;
+package main.java.processingTasks;
+
+import main.java.structures.Answer;
 
 import java.util.ArrayList;
 

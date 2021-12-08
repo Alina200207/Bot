@@ -1,4 +1,4 @@
-package main.java;
+package main.java.structures;
 
 public class PercentStatistic {
     public final double percentFewer;

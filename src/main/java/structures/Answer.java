@@ -1,4 +1,4 @@
-package main.java;
+package main.java.structures;
 
 public class Answer {
     public final String answerString;

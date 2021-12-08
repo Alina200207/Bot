@@ -1,9 +1,9 @@
-package main.java;
+package main.java.userData;
 
 import main.java.Bot;
-import main.java.Condition;
-import main.java.CountTasks;
-import main.java.Type;
+import main.java.structures.Condition;
+import main.java.structures.CountTasks;
+import main.java.structures.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;

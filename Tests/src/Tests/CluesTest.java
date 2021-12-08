@@ -1,7 +1,7 @@
 package Tests;
 
-import main.java.Clue;
-import main.java.GetClue;
+import main.java.clues.Clue;
+import main.java.clues.GetClue;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
