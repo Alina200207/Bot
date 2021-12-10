@@ -62,22 +62,22 @@ public class Tasks{
 
     public HashMap<String, String> GetExamplesLevel1()
     {
-        var expression = this.MathTasks.GetAddTask(ExamplesLevel1);
-        ExamplesLevel1.put(expression.get(0), expression.get(1));
+        var expression = this.MathTasks.GetAddTask();
+        ExamplesLevel1.put(expression.example, expression.answer);
         return ExamplesLevel1;
     }
 
     public HashMap<String, String> GetExamplesLevel2()
     {
-        var expression = this.MathTasks.GetSubTask(ExamplesLevel2);
-        ExamplesLevel2.put(expression.get(0), expression.get(1));
+        var expression = this.MathTasks.GetSubTask();
+        ExamplesLevel2.put(expression.example, expression.answer);
         return ExamplesLevel2;
     }
 
     public HashMap<String, String> GetExamplesLevel3()
     {
-        var expression = this.MathTasks.GetMulTask(ExamplesLevel3);
-        ExamplesLevel3.put(expression.get(0), expression.get(1));
+        var expression = this.MathTasks.GetMulTask();
+        ExamplesLevel3.put(expression.example, expression.answer);
         return ExamplesLevel3;
     }
 

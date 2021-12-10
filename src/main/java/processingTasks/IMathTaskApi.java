@@ -1,11 +1,13 @@
 package main.java.processingTasks;
 
+import main.java.structures.Expression;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface IMathTaskApi {
-    ArrayList<String> GetAddTask(HashMap<String, String> examplesLevel);
-    ArrayList<String> GetSubTask(HashMap<String, String> examplesLevel);
-    ArrayList<String> GetMulTask(HashMap<String, String> examplesLevel);
-    ArrayList<String> GetExample(String url);
+    Expression GetAddTask();
+    Expression GetSubTask();
+    Expression GetMulTask();
+    Expression GetExample(String url);
 }
