@@ -76,10 +76,7 @@ public class Bot extends TelegramLongPollingBot {
                 switch (inputText) {
                     case "/start", "/help", "Помощь", "/time", "Игра на время", "/examples", "Пример", "/sequences", "Последовательность",
                             "/issue", "Загадка", "/level", "Уровень сложности примеров",
-                            "/statistic", "Статистика" ->
-                            {
-                                processingCommands(userData, inputText, chat_Id);
-                            }
+                            "/statistic", "Статистика" -> processingCommands(userData, inputText, chat_Id);
                     default -> {
                         if (userData.getCondition() != null) {
                             message.setText(processingAnswer(userData, inputText));
@@ -153,9 +150,7 @@ public class Bot extends TelegramLongPollingBot {
                 userData.setLevel(inputText);
                 message = levelCommand.getAnswer(inputText);
             }
-            default -> {
-                message = "";
-            }
+            default -> message = "";
         }
         UsersData.put(userData.getId(), userData);
         return message;
@@ -226,8 +221,39 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage(message);
     }
 
+    private Pair<String, Boolean> processingCallbackQuery(CallbackQuery button){
+        String message = "";
+        String chat_id = button.getMessage().getChatId().toString();
+        System.out.println(chat_id);
+        String data = button.getData();
+        var needClueButton = false;
+        var userData = UsersData.get(chat_id);
+        switch (data) {
+            case "clueButton" -> {
+                var condition = UsersData.get(chat_id).getCondition();
+                var clue = Clue.GetClues();
+                message = clue.get(condition.task);
+            }
+            case "sequenceButton" -> {
+                message = getTask(userData, Type.TypeTask.Sequence);
+                userData.setCondition(State.Sequence, message);
+                needClueButton = true;
+            }
+            case "examplesButton" -> {
+                message = getTask(userData, Type.TypeTask.Example);
+                userData.setCondition(State.Example, message);
+            }
+            case "issueButton" -> {
+                message = getTask(userData, Type.TypeTask.Issue);
+                userData.setCondition(State.Issue, message);
+                needClueButton = true;
+            }
+        }
+        UsersData.put(chat_id, userData);
+        return new Pair<>(message, needClueButton);
+    }
 
-        private void sendMessage(SendMessage message) {
+    private void sendMessage(SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
@@ -261,7 +287,7 @@ public class Bot extends TelegramLongPollingBot {
     }
     private ReplyKeyboard replyKeyboard(){
         KeyboardRow buttonsFirstRow = (KeyboardRow)Arrays.asList(new KeyboardButton("Загадка"),
-                new KeyboardButton("Пример"), new KeyboardButton("Последовательность"));
+        new KeyboardButton("Пример"), new KeyboardButton("Последовательность"));
         KeyboardRow buttonsSecondRow = (KeyboardRow)Arrays.asList(new KeyboardButton("Статистика"),
                 new KeyboardButton("Уровень сложности примеров"));
         KeyboardRow buttonsThirdRow = (KeyboardRow)Arrays.asList(new KeyboardButton("Игра на время"),
@@ -273,35 +299,4 @@ public class Bot extends TelegramLongPollingBot {
         return markup;
     }
 
-    private Pair<String, Boolean> processingCallbackQuery(CallbackQuery button){
-        String message = "";
-        String chat_id = button.getMessage().getChatId().toString();
-        System.out.println(chat_id);
-        String data = button.getData();
-        var needClueButton = false;
-        var userData = UsersData.get(chat_id);
-        switch (data) {
-            case "clueButton" -> {
-                var condition = UsersData.get(chat_id).getCondition();
-                var clue = Clue.GetClues();
-                message = clue.get(condition.task);
-            }
-            case "sequenceButton" -> {
-                message = getTask(userData, Type.TypeTask.Sequence);
-                userData.setCondition(State.Sequence, message);
-                needClueButton = true;
-            }
-            case "examplesButton" -> {
-                message = getTask(userData, Type.TypeTask.Example);
-                userData.setCondition(State.Example, message);
-            }
-            case "issueButton" -> {
-                message = getTask(userData, Type.TypeTask.Issue);
-                userData.setCondition(State.Issue, message);
-                needClueButton = true;
-            }
-        }
-        UsersData.put(chat_id, userData);
-        return new Pair<>(message, needClueButton);
-    }
 }
