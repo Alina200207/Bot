@@ -23,7 +23,7 @@ public class MathTasks implements IMathTaskApi{
 
     public Expression GetExample(String url) {
         var a = new Api();
-        Expression expression = null;
+        Expression expression = new Expression("", "");
         try {
             expression = a.GetExampleWithApi(url);
         }
