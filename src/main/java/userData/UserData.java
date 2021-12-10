@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserData {
-    public String ui = "";
     private final String id;
     private Condition condition;
     private HashMap<Type.TypeTask, ArrayList<String>> usedTasks;

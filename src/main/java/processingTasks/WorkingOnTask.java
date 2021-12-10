@@ -1,13 +1,13 @@
 package main.java.processingTasks;
 
-import main.java.structures.Answer;
+import main.java.structures.AnswerAndCorrectness;
 
 import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Random;
 
-public class WorkingOnTask{ // todo test
+public class WorkingOnTask{
 
     public HashMap<String, String> Tasks;
     public WorkingOnTask(HashMap<String, String> task) {
@@ -26,11 +26,11 @@ public class WorkingOnTask{ // todo test
         var condition = notUsedTasks.get(random.nextInt(notUsedTasks.size()));
         return condition;
     }
-    public Answer compareResult(String condition, String playerAnswer)
+    public AnswerAndCorrectness compareResult(String condition, String playerAnswer)
     {
         String answer = Tasks.get(condition);
         if (answer!=null && answer.equals(playerAnswer))
-            return new Answer(answer, true);
-        return new Answer(answer, false);
+            return new AnswerAndCorrectness(answer, true);
+        return new AnswerAndCorrectness(answer, false);
     }
 }

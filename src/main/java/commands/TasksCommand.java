@@ -1,6 +1,6 @@
 package main.java.commands;
 
-import main.java.structures.Answer;
+import main.java.structures.AnswerAndCorrectness;
 import main.java.processingTasks.WorkingOnTask;
 
 import java.util.ArrayList;
@@ -20,17 +20,17 @@ public class TasksCommand {
         this.workingOnTask = task;
     }
 
-    public Answer getAnswer(String condition, String playerAnswer){
+    public AnswerAndCorrectness getAnswer(String condition, String playerAnswer){
         return workingOnTask.compareResult(condition, playerAnswer);
     }
 
-    public Answer getAnswerWithText(Answer answer){
+    public AnswerAndCorrectness getAnswerWithText(AnswerAndCorrectness answer){
         var str = "Сыграем еще?";
         var message = "";
         if (answer.correctness)
             message = "Верно! \n" + str;
         else message = "Неверно :( \n" +
                 String.format("Правильный ответ: %s \n", answer.answerString) + str;
-        return new Answer(message, answer.correctness);
+        return new AnswerAndCorrectness(message, answer.correctness);
     }
 }
