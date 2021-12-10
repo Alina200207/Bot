@@ -1,33 +1,35 @@
 package main.java.processingTasks;
 
 import main.java.Api;
+import main.java.structures.Expression;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MathTasks implements IMathTaskApi{
-    public HashMap<String, String> GetAddTask(HashMap<String, String> examplesLevel){
+    public Expression GetAddTask(){
         var url = "https://x-math.herokuapp.com/api/add";
-        return GetExample(examplesLevel, url);
+        return GetExample(url);
     }
-    public HashMap<String, String> GetSubTask(HashMap<String, String> examplesLevel){
+    public Expression GetSubTask(){
         var url = "https://x-math.herokuapp.com/api/sub";
-        return GetExample(examplesLevel, url);
+        return GetExample(url);
     }
-    public HashMap<String, String> GetMulTask(HashMap<String, String> examplesLevel){
+    public Expression GetMulTask(){
         var url =  "https://x-math.herokuapp.com/api/mul";
-        return GetExample(examplesLevel, url);
+        return GetExample(url);
     }
 
-    public HashMap<String, String> GetExample(HashMap<String, String> examplesLevel, String url) {
+    public Expression GetExample(String url) {
         var a = new Api();
+        Expression expression = null;
         try {
-            var expression = a.GetExampleWithApi(url);
-            examplesLevel.put(expression.get(0), expression.get(1));
+            expression = a.GetExampleWithApi(url);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return examplesLevel;
+        return expression;
     }
 }

@@ -3,6 +3,7 @@ package main.java;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import main.java.structures.Expression;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +13,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class Api {
-    public ArrayList<String> GetExampleWithApi(String u) throws IOException {
-        var expression = new ArrayList<String>();
+    public Expression GetExampleWithApi(String u) throws IOException {
         URL url = new URL(u);
         URLConnection request = url.openConnection();
         request.connect();
@@ -22,8 +22,6 @@ public class Api {
         JsonObject rootObj = root.getAsJsonObject();
         String message = rootObj.get("expression").getAsString();
         String answer = rootObj.get("answer").getAsString();
-        expression.add(message);
-        expression.add(answer);
-        return expression;
+        return new Expression(message, answer);
     }
 }
